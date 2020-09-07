@@ -22,11 +22,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/list_meetings"
+        android:name="com.openclassrooms.entrevoisins.ui.neighbour_list.NeighbourFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layoutManager="LinearLayoutManager" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_meeting"

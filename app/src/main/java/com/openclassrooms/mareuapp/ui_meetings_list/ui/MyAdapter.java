@@ -19,10 +19,10 @@ import butterknife.ButterKnife;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<Meeting> mMeetings;
+    private final List<Meeting> mMeetings;
 
     public MyAdapter(List<Meeting> items) {
-        mMeetings = items;
+      mMeetings = items;
     }
 
     @NonNull
