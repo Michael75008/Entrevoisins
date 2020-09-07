@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.openclassrooms.mareuapp.ui_meetings_list.ui.MeetingActivity">
+    <item
+        android:id="@+id/filterbydate"
+        android:orderInCategory="100"
+        android:title="Filtrer par date"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/filterbyplace"
+        android:orderInCategory="100"
+        android:title="Filtrer par lieu"
+        app:showAsAction="never" />
+</menu>
