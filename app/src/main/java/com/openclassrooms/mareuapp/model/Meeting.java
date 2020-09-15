@@ -2,6 +2,8 @@ package com.openclassrooms.mareuapp.model;
 
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Model object representing a Meeting
@@ -22,88 +24,54 @@ public class Meeting implements Serializable {
     private String name;
 
     /**
-     * Meeting place
-     */
-
-    private String place;
-
-    /**
-     * Meeting date
-     */
-
-    private String meetingDate;
-
-    /**
      * Meeting subject
      */
 
     private String aboutMeet;
 
-    /**
-     * Meeting Participant's Mail List
-     */
+    private Room mRoom;
 
-    private String mail;
+
+    private Date mDate;
+
+    private List<Participant> mParticipants;
 
     /**
      * Constructor
      */
 
-    public Meeting(int id, String name, String place, String meetingDate, String aboutMeet, String mail) {
+    public Meeting(int id, String name, String aboutMeet, Room room, Date date, List<Participant> participants) {
         this.id = id;
         this.name = name;
-        this.place = place;
-        this.meetingDate = meetingDate;
         this.aboutMeet = aboutMeet;
-        this.mail = mail;
+        mRoom = room;
+        mDate = date;
+        mParticipants = participants;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Meeting(int id, String name, String aboutMeet) {
         this.id = id;
+        this.name = name;
+        this.aboutMeet = aboutMeet;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Date getDate() {
+        return mDate;
     }
 
-    public String getPlace() {
-        return place;
+    public void setDate(Date date) {
+        mDate = date;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public List<Participant> getParticipants() {
+        return mParticipants;
     }
 
-    public String getMeetingDate() {
-        return meetingDate;
+    public void setParticipants(List<Participant> participants) {
+        mParticipants = participants;
     }
-
-    public void setMeetingDate(String meetingDate) {
-        this.meetingDate = meetingDate;
-    }
-
-    public String getAboutMeet() {
-        return aboutMeet;
-    }
-
-    public void setAboutMeet(String aboutMeet) {
-        this.aboutMeet = aboutMeet;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
 }

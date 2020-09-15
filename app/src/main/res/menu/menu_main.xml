@@ -3,13 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.openclassrooms.mareuapp.ui_meetings_list.ui.MeetingActivity">
     <item
-        android:id="@+id/filterbydate"
-        android:orderInCategory="100"
-        android:title="Filtrer par date"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/filterbyplace"
         android:orderInCategory="100"
-        android:title="Filtrer par lieu"
-        app:showAsAction="never" />
+        android:title="Filtrer par Lieu"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/salleA"
+                android:checkable="true"
+                android:title="Salle A"
+                />
+
+            <item
+                android:id="@+id/SalleB"
+                android:checkable="true"
+                android:title="Salle B" />
+
+            <item
+                android:id="@+id/SalleC"
+                android:checkable="true"
+                android:title="Salle C" />
+
+            <item
+                android:id="@+id/SalleD"
+                android:checkable="true"
+                android:title="Salle D"
+                />
+
+            <item
+                android:id="@+id/SalleE"
+                android:checkable="true"
+                android:title="Salle E" />
+
+            <item
+                android:id="@+id/SalleF"
+                android:checkable="true"
+                android:title="Salle F" />
+
+            <item
+                android:id="@+id/SalleG"
+                android:checkable="true"
+                android:title="Salle G"
+                />
+
+            <item
+                android:id="@+id/SalleH"
+                android:checkable="true"
+                android:title="Salle H" />
+
+            <item
+                android:id="@+id/SalleI"
+                android:checkable="true"
+                android:title="Salle I" />
+            <item
+                android:id="@+id/SalleJ"
+                android:checkable="true"
+                android:title="Salle J"
+                />
+
+        </menu>
+    </item>
+    <item
+        android:id="@+id/filterbydate"
+        android:title="Filtrer par Date"
+        app:showAsAction="never">
+    </item>
 </menu>

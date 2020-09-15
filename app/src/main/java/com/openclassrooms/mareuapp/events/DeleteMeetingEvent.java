@@ -12,5 +12,7 @@ public class DeleteMeetingEvent {
     /**
      * Constructor
      */
-    public DeleteMeetingEvent(Meeting meeting) {this.mMeeting = meeting; }
+    public DeleteMeetingEvent(Meeting meeting) {
+        this.mMeeting = meeting;
+    }
 }

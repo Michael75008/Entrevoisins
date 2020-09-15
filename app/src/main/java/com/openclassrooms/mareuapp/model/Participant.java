@@ -7,17 +7,28 @@ import java.io.Serializable;
  */
 public class Participant implements Serializable {
 
-    private String mail;
+    private int Id;
 
-    public Participant(String mail) {
-        this.mail = mail;
+    private String Mail;
+
+    public Participant(int id, String email) {
+        Id = id;
+        this.Mail = email;
     }
 
     public String getMail() {
-        return mail;
+        return Mail;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setMail(String email) {
+        Mail = email;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 }

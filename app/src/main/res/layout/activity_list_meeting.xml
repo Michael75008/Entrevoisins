@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui_meetings_list.ui.MeetingActivity">
+    tools:context=".ui_meetings_list.ui.MeetingActivity"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -18,18 +19,19 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Ma Réu" />
+            app:title="@string/AppName" />
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_meetings"
-        android:name="com.openclassrooms.entrevoisins.ui.neighbour_list.NeighbourFragment"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@android:dimen/app_icon_size"
-        app:layoutManager="LinearLayoutManager" />
+        app:layoutManager="LinearLayoutManager"
+        android:fitsSystemWindows="true"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_meeting"
@@ -41,7 +43,6 @@
         android:clickable="true"
         app:maxImageSize="50dp"
         app:srcCompat="@drawable/ic_add_icon_foreground"
-        android:onClick="ChangeActivity"
         tools:targetApi="lollipop"
         android:focusable="true" />
 
