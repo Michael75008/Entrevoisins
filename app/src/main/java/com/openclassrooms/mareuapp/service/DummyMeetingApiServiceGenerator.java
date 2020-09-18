@@ -13,6 +13,8 @@ import static com.openclassrooms.mareuapp.R.id.pink_color;
 
 public abstract class DummyMeetingApiServiceGenerator {
 
+
+
     public static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
 
             new Meeting(1, "Réunion A", "describe"),

@@ -237,7 +237,7 @@
 
 
     <EditText
-        android:id="@+id/edittext"
+        android:id="@+id/participants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="top"
@@ -258,22 +258,18 @@
         android:layout_marginTop="24dp"
         android:text="Enregistrer la Réunion"
         app:layout_constraintEnd_toEndOf="@+id/email_validator"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/edittext"
-        app:layout_constraintTop_toBottomOf="@+id/edittext" />
+        app:layout_constraintStart_toStartOf="@+id/participants"
+        app:layout_constraintTop_toBottomOf="@+id/participants" />
 
     <Button
         android:id="@+id/email_validator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginRight="24dp"
         android:text="Valider"
-        app:layout_constraintBottom_toBottomOf="@+id/edittext"
+        app:layout_constraintBottom_toBottomOf="@+id/participants"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.752"
-        app:layout_constraintStart_toEndOf="@+id/edittext"
-        app:layout_constraintTop_toTopOf="@+id/edittext"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/participants" />
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

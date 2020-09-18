@@ -16,7 +16,6 @@ import android.widget.DatePicker;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.DummyMeetingApiServiceGenerator;
-import com.openclassrooms.mareuapp.service.MeetingApiService;
 
 import java.util.Calendar;
 import java.util.List;

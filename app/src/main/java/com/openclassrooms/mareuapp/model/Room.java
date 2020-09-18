@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Room implements Serializable {
 
-    private int id;
+    private long id;
 
     private int image;
 
     private String name;
 
-    public Room(int id, int image, String name) {
+    public Room(long id, int image, String name) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -22,5 +22,13 @@ public class Room implements Serializable {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

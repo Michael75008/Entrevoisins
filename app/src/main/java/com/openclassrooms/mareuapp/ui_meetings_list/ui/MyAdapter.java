@@ -1,5 +1,7 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,11 +49,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         Meeting meeting = mMeetings.get(position);
-
         viewHolder.updateWithMeetingItem(this.mMeetings.get(position));
 
         Glide.with(viewHolder.mMeetingMarker.getContext())
-                .load(R.drawable.ic_colorimetry_green)
+                .load(R.drawable.ic_circle)
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.mMeetingMarker);
 
@@ -66,6 +67,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_meeting_name)
         public TextView mMeetingName;
+        @BindView(R.id.item_meeting_mails)
+        public TextView mMeetingMails;
         @BindView(R.id.item_list_delete_button)
         public ImageButton mDeleteButton;
         @BindView(R.id.item_logo)
@@ -90,12 +93,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 for (int i = 0; i < participants.size(); i++) {
                     Participant participant = meeting.getParticipants().get(i);
                     result.append(participant.getMail());
+                    result.append(", ");
                 }
             }
                 result.append(" - ");
-
-            this.mMeetingName.setText(meeting.getName());
+            this.mMeetingName.setText(result.toString());
             result.toString();
+
+
         }
 
         private Calendar dateToCalendar(Date date) {

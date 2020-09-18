@@ -9,23 +9,41 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.service.MeetingApiService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static java.util.UUID.randomUUID;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
+    MeetingApiService mApiService;
     DatePickerDialog mDatePickerDialogpicker;
     TimePickerDialog mTimePickerDialog;
+    Random rd = new Random();
+    @BindView(R.id.participants)
+    EditText mParticipants;
+    @BindView(R.id.meeting_name)
+    EditText mNameInput;
+    @BindView(R.id.meeting_about_me)
+    EditText mAboutMeInput;
     @BindView(R.id.date_result)
     TextView mDateTextView;
     @BindView(R.id.date_editor)
@@ -40,13 +58,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     Button mTimeButton;
 
 
-
     protected void onCreate(Bundle savedInstanceStace) {
         super.onCreate(savedInstanceStace);
         setContentView(R.layout.activity_add_meeting);
-        setActionBar();
         ButterKnife.bind(this);
-        setDataInput();
+        setActionBar();
+        setDateInput();
         setHourInput();
     }
 
@@ -60,7 +77,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setDataInput() {
+    private void setDateInput() {
         mDateInput.setInputType(InputType.TYPE_NULL);
         mDateInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +98,15 @@ public class AddMeetingActivity extends AppCompatActivity {
                 mDatePickerDialogpicker.show();
             }
         });
-        mDateButton.setOnClickListener(new View.OnClickListener(){
+        mDateButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
-            public void onClick(View v){
+            public void onClick(View v) {
                 mDateTextView.setText("Date de Réunion: " + mDateInput.getText());
             }
         });
     }
 
-    private void setHourInput(){
+    private void setHourInput() {
         mTimeInput.setInputType(InputType.TYPE_NULL);
         mTimeInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,4 +131,20 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         });
     }
+/**
+ @OnClick(R.id.meeting_validator) void addMeeting(){
+ Meeting meeting = new Meeting(
+ rd.nextLong(),
+ mNameInput.getText().toString(),
+ mAboutMeInput.getText().toString(),
+
+ mDateInput.getText().toString(),
+ mTimeInput.getText().toString(),
+ mParticipants.getText().toString()
+ );
+ mApiService.createMeeting(meeting);
+ finish();
+ }
+
+ */
 }
