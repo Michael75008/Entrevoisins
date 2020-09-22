@@ -1,5 +1,10 @@
 package com.openclassrooms.mareuapp.model;
 
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+
+import com.openclassrooms.mareuapp.R;
+
 import java.io.Serializable;
 
 public class Room implements Serializable {

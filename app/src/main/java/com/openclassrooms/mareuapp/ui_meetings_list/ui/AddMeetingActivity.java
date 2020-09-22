@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.MeetingApiService;
@@ -34,6 +35,8 @@ import static java.util.UUID.randomUUID;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
+
+
     MeetingApiService mApiService;
     DatePickerDialog mDatePickerDialogpicker;
     TimePickerDialog mTimePickerDialog;
@@ -62,6 +65,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceStace);
         setContentView(R.layout.activity_add_meeting);
         ButterKnife.bind(this);
+        mApiService = DI.getMeetingApiService();
         setActionBar();
         setDateInput();
         setHourInput();
@@ -131,20 +135,16 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         });
     }
-/**
+
+
  @OnClick(R.id.meeting_validator) void addMeeting(){
  Meeting meeting = new Meeting(
- rd.nextLong(),
- mNameInput.getText().toString(),
- mAboutMeInput.getText().toString(),
-
- mDateInput.getText().toString(),
- mTimeInput.getText().toString(),
- mParticipants.getText().toString()
+         mNameInput.getText().toString(),
+         mAboutMeInput.getText().toString(),
  );
+
  mApiService.createMeeting(meeting);
  finish();
  }
 
- */
 }

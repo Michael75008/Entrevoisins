@@ -13,9 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
+import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
-import com.openclassrooms.mareuapp.service.DummyMeetingApiServiceGenerator;
+import com.openclassrooms.mareuapp.service.MeetingApiService;
 
 import java.util.Calendar;
 import java.util.List;
@@ -30,6 +31,8 @@ import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
 public class MeetingActivity extends AppCompatActivity {
 
+    private MeetingApiService mMeetingApiService;
+    private List<Meeting> mMeetings;
     DatePickerDialog picker;
     @BindView(toolbar)
     Toolbar mToolbar;
@@ -45,6 +48,7 @@ public class MeetingActivity extends AppCompatActivity {
         setContentView(activity_list_meeting);
         ButterKnife.bind(this);
         setActionBar();
+        mMeetingApiService = DI.getMeetingApiService();
         initData();
 
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +90,8 @@ public class MeetingActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        List<Meeting> meeting = DummyMeetingApiServiceGenerator.generateMeetings();
-        this.mRecyclerView.setAdapter(new MyAdapter(meeting));
+        mMeetings = mMeetingApiService.getMeetings();
+        this.mRecyclerView.setAdapter(new MyAdapter(mMeetings));
     }
 
     private void setActionBar(){

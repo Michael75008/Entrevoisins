@@ -1,20 +1,16 @@
+
 package com.openclassrooms.mareuapp.model;
 
 
-import android.graphics.Color;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Model object representing a Meeting
  */
 
 public class Meeting implements Serializable {
-
-    private static Random sRandom = new Random();
-    private static Integer sLastId = 3;
 
     /**
      * Identifier
@@ -34,34 +30,35 @@ public class Meeting implements Serializable {
 
     private String aboutMeet;
 
+    /**
+     * Meeting Room
+     */
 
     private String mRoom;
 
+    /**
+     * Meeting Date
+     */
 
-    private String mDate;
+    private Date mDate;
 
-    private String mHour;
+    /**
+     * List of Participants
+     */
 
     private List<Participant> mParticipants;
-
-    private Integer mColor;
 
     /**
      * Constructor
      */
 
-    public Meeting(String name, String aboutMeet, String room, String date, String hour) {
-        id = ++sLastId;
+    public Meeting(int id, String name, String aboutMeet, Room room, Date date, List<Participant> participants) {
+        this.id = id;
         this.name = name;
         this.aboutMeet = aboutMeet;
-        mRoom = room;
-        mDate = date;
-        mHour = hour;
-        mColor = Color.argb(
-                sRandom.nextInt(255),
-                sRandom.nextInt(255),
-                sRandom.nextInt(255),
-                sRandom.nextInt(255));
+        Date mdate = date;
+        Room mRoom = room;
+        mParticipants = participants;
     }
 
     public Meeting(int id, String name, String aboutMeet) {
@@ -74,11 +71,14 @@ public class Meeting implements Serializable {
         return name;
     }
 
-    public String getDate() {
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Date getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         mDate = date;
     }
 
@@ -98,15 +98,13 @@ public class Meeting implements Serializable {
         mRoom = room;
     }
 
-    public String getHour() {
-        return mHour;
+    public String getAboutMeet() {
+        return aboutMeet;
     }
 
-    public void setHour(String hour) {
-        mHour = hour;
+    public void setAboutMeet(String aboutMeet) {
+        this.aboutMeet = aboutMeet;
     }
 
-    public Integer getColor(){
-        return mColor;
-    }
+
 }

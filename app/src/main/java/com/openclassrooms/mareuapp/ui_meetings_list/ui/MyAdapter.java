@@ -1,7 +1,5 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +50,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.updateWithMeetingItem(this.mMeetings.get(position));
 
         Glide.with(viewHolder.mMeetingMarker.getContext())
-                .load(R.drawable.ic_circle)
+                .load(R.drawable.ic_circle_red)
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.mMeetingMarker);
 
