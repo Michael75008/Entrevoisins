@@ -15,6 +15,7 @@ import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
+import com.openclassrooms.mareuapp.service.MeetingApiService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,13 +80,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public void updateWithMeetingItem(Meeting meeting) {
             StringBuilder result = new StringBuilder();
-            if (meeting.getDate() != null) {
-                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                String dateformatted = dateFormat.format(meeting.getDate());
-                result.append(dateformatted);
-            }
-                result.append(" - ");
-
             List<Participant> participants = meeting.getParticipants();
             if (participants != null) {
                 for (int i = 0; i < participants.size(); i++) {
@@ -94,11 +88,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     result.append(", ");
                 }
             }
-                result.append(" - ");
-            this.mMeetingName.setText(result.toString());
-            result.toString();
+            this.mMeetingMails.setText(result.toString());
 
+            StringBuilder result1 = new StringBuilder();
+            result1.append(meeting.getName());
+            result1.append(" - ");
+            result1.append(meeting.getDate());
+            if (meeting.getDate() != null) {
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                String dateformatted = dateFormat.format(meeting.getDate());
+                result1.append(dateformatted);
+            }
+            result1.append(" - ");
+            result1.append(meeting.getRoom());
 
+            this.mMeetingName.setText(result1.toString());
         }
 
         private Calendar dateToCalendar(Date date) {

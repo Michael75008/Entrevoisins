@@ -5,271 +5,146 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/meeting_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="Nom de la Réunion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="MeetingName" />
+        android:orientation="vertical"
+        tools:context=".ui.AddMeetingActivity">
 
-    <EditText
-        android:id="@+id/meeting_about_me"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Thème de la Réunion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_name" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/room_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorEnabled="true">
 
-    <EditText
-        android:id="@+id/date_editor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="24dp"
-        android:ems="10"
-        android:hint="Selectionner date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_about_me" />
+            <AutoCompleteTextView
+                android:id="@+id/room_name"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:hint="Meeting_room_name"
+                android:inputType="text"
+                android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/date_validator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Valider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/date_editor"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_about_me" />
+        </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/date_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="16dp"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_editor" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/about_me_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorEnabled="true">
 
-    <EditText
-        android:id="@+id/time_editor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="24dp"
-        android:ems="10"
-        android:hint="Selectionner heure"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_result" />
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/about_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Meeting AboutMe"
+                android:inputType="text" />
 
-    <Button
-        android:id="@+id/time_validator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Valider"
-        app:layout_constraintBottom_toBottomOf="@+id/time_editor"
-        app:layout_constraintEnd_toEndOf="@+id/date_validator"
-        app:layout_constraintStart_toStartOf="@+id/date_validator"
-        app:layout_constraintTop_toTopOf="@+id/time_editor" />
+        </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/time_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_editor" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="Date"
+                android:inputType="date" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/from_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                app:errorEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="From"
+                    android:inputType="time" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Selectionnez une salle"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_result" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/to_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                app:errorEnabled="true">
 
-    <CheckBox
-        android:id="@+id/choiceA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Salle A "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="To"
+                    android:inputType="time" />
 
-    <CheckBox
-        android:id="@+id/choiceB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Salle B "
-        app:layout_constraintStart_toEndOf="@+id/choiceA"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            </android.support.design.widget.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/choiceC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Salle C "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choiceA" />
+        </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/choiceD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Salle D "
-        app:layout_constraintStart_toEndOf="@+id/choiceC"
-        app:layout_constraintTop_toBottomOf="@+id/choiceB" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/participants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorEnabled="true">
 
-    <CheckBox
-        android:id="@+id/choiceE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_margin="16dp"
-        android:text="Salle E "
-        app:layout_constraintStart_toEndOf="@+id/choiceB"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/emails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="List of participants (emails)"
+                android:inputType="textEmailAddress" />
 
-    <CheckBox
-        android:id="@+id/choiceF"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Salle F "
-        app:layout_constraintStart_toEndOf="@+id/choiceD"
-        app:layout_constraintTop_toBottomOf="@+id/choiceE" />
+            <android.support.design.chip.ChipGroup
+                android:id="@+id/emails_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
-    <CheckBox
-        android:id="@+id/choiceG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="24dp"
-        android:text="Salle G "
-        app:layout_constraintStart_toEndOf="@+id/choiceE"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:layout_marginEnd="24dp" />
+        </android.support.design.widget.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/choiceH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="24dp"
-        android:text="Salle H "
-        app:layout_constraintStart_toEndOf="@+id/choiceF"
-        app:layout_constraintTop_toBottomOf="@+id/choiceG"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp" />
+        <Button
+            android:id="@+id/meeting_validator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valider"
+            app:layout_constraintBottom_toBottomOf="@+id/participants"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/participants"
+            android:layout_gravity="center_vertical|center_horizontal"/>
 
-    <CheckBox
-        android:id="@+id/choiceI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Salle I "
-        app:layout_constraintEnd_toEndOf="@+id/choiceD"
-        app:layout_constraintStart_toStartOf="@+id/choiceD"
-        app:layout_constraintTop_toBottomOf="@+id/choiceD" />
-
-    <CheckBox
-        android:id="@+id/choiceJ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Salle J "
-        app:layout_constraintEnd_toEndOf="@+id/choiceF"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/choiceF"
-        app:layout_constraintTop_toBottomOf="@+id/choiceF" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:text="Selectionnez les participant"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/choiceJ"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/choiceI"
-        app:layout_constraintTop_toBottomOf="@+id/choiceI" />
-
-
-    <EditText
-        android:id="@+id/participants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:maxLines="5"
-        android:minLines="3"
-        android:ems="10"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Button
-        android:id="@+id/meeting_validator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Enregistrer la Réunion"
-        app:layout_constraintEnd_toEndOf="@+id/email_validator"
-        app:layout_constraintStart_toStartOf="@+id/participants"
-        app:layout_constraintTop_toBottomOf="@+id/participants" />
-
-    <Button
-        android:id="@+id/email_validator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="24dp"
-        android:text="Valider"
-        app:layout_constraintBottom_toBottomOf="@+id/participants"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/participants" />
-
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </ScrollView>

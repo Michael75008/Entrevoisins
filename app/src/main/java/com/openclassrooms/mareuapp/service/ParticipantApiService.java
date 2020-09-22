@@ -13,9 +13,4 @@ public interface ParticipantApiService {
      */
     List<Participant> getParticipants();
 
-    /**
-     * Creates a Participant
-     */
-
-    void createParticipant(Participant participant);
 }

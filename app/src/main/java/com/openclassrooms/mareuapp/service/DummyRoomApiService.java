@@ -4,7 +4,7 @@ import com.openclassrooms.mareuapp.model.Room;
 
 import java.util.List;
 
-public class DummyRoomApiService {
+public class DummyRoomApiService implements RoomApiService {
 
     private final List<Room> mRooms = RoomApiServiceGenerator.generateRooms();
 
