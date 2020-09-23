@@ -32,7 +32,6 @@ import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 public class MeetingActivity extends AppCompatActivity {
 
     private MeetingApiService mMeetingApiService;
-    private List<Meeting> mMeetings;
     DatePickerDialog picker;
     @BindView(toolbar)
     Toolbar mToolbar;
@@ -90,8 +89,8 @@ public class MeetingActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        mMeetings = mMeetingApiService.getMeetings();
-        this.mRecyclerView.setAdapter(new MyAdapter(mMeetings));
+        List<Meeting> meetings = mMeetingApiService.getMeetings();
+        this.mRecyclerView.setAdapter(new MyAdapter(meetings));
     }
 
     private void setActionBar(){

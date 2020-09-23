@@ -15,6 +15,7 @@ import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
+import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.MeetingApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -93,14 +94,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             StringBuilder result1 = new StringBuilder();
             result1.append(meeting.getName());
             result1.append(" - ");
-            result1.append(meeting.getDate());
-            if (meeting.getDate() != null) {
-                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                String dateformatted = dateFormat.format(meeting.getDate());
-                result1.append(dateformatted);
-            }
+            DateFormat dateFormat1 = new SimpleDateFormat ("HH:mm");
+            String hour = dateFormat1.format(meeting.getDate());
+            result1.append(hour);
             result1.append(" - ");
-            result1.append(meeting.getRoom());
+            Room room = meeting.getRoom();
+            result1.append(room.getName());
 
             this.mMeetingName.setText(result1.toString());
         }

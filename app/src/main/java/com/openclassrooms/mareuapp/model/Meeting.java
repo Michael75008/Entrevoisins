@@ -34,7 +34,7 @@ public class Meeting implements Serializable {
      * Meeting Room
      */
 
-    private String mRoom;
+    private Room mRoom;
 
     /**
      * Meeting Date
@@ -56,8 +56,8 @@ public class Meeting implements Serializable {
         this.id = id;
         this.name = name;
         this.aboutMeet = aboutMeet;
-        Date mdate = date;
-        Room mRoom = room;
+        this.mDate = date;
+        this.mRoom= room;
         mParticipants = participants;
     }
 
@@ -90,11 +90,11 @@ public class Meeting implements Serializable {
         mParticipants = participants;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return mRoom;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(Room room) {
         mRoom = room;
     }
 
