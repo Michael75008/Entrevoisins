@@ -12,8 +12,5 @@ public class DummyRoomApiService implements RoomApiService {
      * Get Room's List
      */
 
-    public List<Room> getRooms() {
-        return mRooms;
-    }
-
+    public List<Room> getRooms() { return mRooms; }
 }

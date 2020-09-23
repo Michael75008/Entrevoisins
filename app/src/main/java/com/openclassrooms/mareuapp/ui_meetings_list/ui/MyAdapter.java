@@ -16,7 +16,6 @@ import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
-import com.openclassrooms.mareuapp.service.MeetingApiService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,6 +32,7 @@ import butterknife.ButterKnife;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private final List<Meeting> mMeetings;
+
 
     public MyAdapter(List<Meeting> items) {
         this.mMeetings = items;
@@ -52,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.updateWithMeetingItem(this.mMeetings.get(position));
 
         Glide.with(viewHolder.mMeetingMarker.getContext())
-                .load(R.drawable.ic_circle_red)
+                .load(meeting.getRoom().getImage())
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.mMeetingMarker);
 
@@ -80,28 +80,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
 
         public void updateWithMeetingItem(Meeting meeting) {
-            StringBuilder result = new StringBuilder();
+            StringBuilder titleResult = new StringBuilder();
             List<Participant> participants = meeting.getParticipants();
             if (participants != null) {
                 for (int i = 0; i < participants.size(); i++) {
                     Participant participant = meeting.getParticipants().get(i);
-                    result.append(participant.getMail());
-                    result.append(", ");
+                    titleResult.append(participant.getMail());
+                    if (i < participants.size() - 1) {
+                        titleResult.append(", ");
+                    }
                 }
             }
-            this.mMeetingMails.setText(result.toString());
+            this.mMeetingMails.setText(titleResult.toString());
 
-            StringBuilder result1 = new StringBuilder();
-            result1.append(meeting.getName());
-            result1.append(" - ");
-            DateFormat dateFormat1 = new SimpleDateFormat ("HH:mm");
+
+            StringBuilder subTitleResult = new StringBuilder();
+            subTitleResult.append(meeting.getName());
+            subTitleResult.append(" - ");
+            DateFormat dateFormat1 = new SimpleDateFormat("HH:mm");
             String hour = dateFormat1.format(meeting.getDate());
-            result1.append(hour);
-            result1.append(" - ");
+            subTitleResult.append(hour);
+            subTitleResult.append(" - ");
             Room room = meeting.getRoom();
-            result1.append(room.getName());
-
-            this.mMeetingName.setText(result1.toString());
+            subTitleResult.append(room.getName());
+            this.mMeetingName.setText(subTitleResult.toString());
         }
 
         private Calendar dateToCalendar(Date date) {

@@ -18,13 +18,25 @@
             android:layout_margin="16dp"
             app:errorEnabled="true">
 
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/list_of_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp"
+                android:padding="8dp"/>
+
+
             <AutoCompleteTextView
                 android:id="@+id/room_name"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
-                android:hint="Meeting_room_name"
+                android:hint="Selectionner la salle de réunion"
                 android:inputType="text"
                 android:textSize="18sp" />
 
@@ -41,7 +53,7 @@
                 android:id="@+id/about_me"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Meeting AboutMe"
+                android:hint="Thème de la réunion"
                 android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
@@ -60,7 +72,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
-                android:hint="Date"
+                android:hint="Date de réunion"
                 android:inputType="date" />
 
         </android.support.design.widget.TextInputLayout>
@@ -86,7 +98,7 @@
                     android:clickable="false"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="From"
+                    android:hint="De"
                     android:inputType="time" />
 
             </android.support.design.widget.TextInputLayout>
@@ -107,7 +119,7 @@
                     android:clickable="false"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="To"
+                    android:hint="à"
                     android:inputType="time" />
 
             </android.support.design.widget.TextInputLayout>
@@ -125,7 +137,7 @@
                 android:id="@+id/emails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="List of participants (emails)"
+                android:hint="Liste des participants (courriels)"
                 android:inputType="textEmailAddress" />
 
             <android.support.design.chip.ChipGroup
