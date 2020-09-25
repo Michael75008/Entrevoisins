@@ -25,12 +25,6 @@ public class Meeting implements Serializable {
     private String name;
 
     /**
-     * Meeting subject
-     */
-
-    private String aboutMeet;
-
-    /**
      * Meeting Room
      */
 
@@ -52,20 +46,14 @@ public class Meeting implements Serializable {
      * Constructor
      */
 
-    public Meeting(int id, String name, String aboutMeet, Room room, Date date, List<Participant> participants) {
+    public Meeting(int id, String name, Room room, Date date, List<Participant> participants) {
         this.id = id;
         this.name = name;
-        this.aboutMeet = aboutMeet;
         this.mDate = date;
         this.mRoom= room;
         mParticipants = participants;
     }
 
-    public Meeting(int id, String name, String aboutMeet) {
-        this.id = id;
-        this.name = name;
-        this.aboutMeet = aboutMeet;
-    }
 
     public String getName() {
         return name;
@@ -98,13 +86,6 @@ public class Meeting implements Serializable {
         mRoom = room;
     }
 
-    public String getAboutMeet() {
-        return aboutMeet;
-    }
-
-    public void setAboutMeet(String aboutMeet) {
-        this.aboutMeet = aboutMeet;
-    }
 
 
 }

@@ -1,5 +1,7 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.TextInputEditText;
@@ -9,20 +11,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.MeetingApiService;
+import com.openclassrooms.mareuapp.service.Pickers.CreateDialogPicker;
 import com.openclassrooms.mareuapp.service.RoomApiService;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTouch;
 
 
@@ -31,6 +36,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     MeetingApiService mApiService;
     RoomApiService mRoomApiService;
+    DatePickerDialog mDatePickerDialog;
     @BindView(R.id.participants)
     TextInputLayout mEmailsTextInputLayout;
     @BindView(R.id.emails_group)
@@ -66,6 +72,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         mApiService = DI.getMeetingApiService();
         mRoomApiService = DI.getRoomApiService();
         List<Room> mRooms = mRoomApiService.getRooms();
+
         setActionBar();
 
         mRoomNameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(
@@ -76,21 +83,44 @@ public class AddMeetingActivity extends AppCompatActivity {
     @OnTouch(R.id.room_name)
     boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
             mRoomNameAutoCompleteTextView.showDropDown();
             return true;
         }
         return (event.getAction() == MotionEvent.ACTION_UP);
     }
 
-    private void setActionBar() {
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Ajout de Réunion");
+    @OnClick(R.id.date)
+    void displayDatePicker() {
+        mDateTextInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+
+                mDatePickerDialog = new DatePickerDialog(AddMeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        mDateTextInputEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/ " + year);
+                    }
+                }, year, month, day);
+                mDatePickerDialog.show();
+            }
+        });
     }
 
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        Toast.makeText(this.getApplicationContext(), "L'ajout de réunion à été annulé", Toast.LENGTH_LONG).show();
-        return true;
+    private void setActionBar() {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Ajout de Réunion");
+        }
+
+        public boolean onSupportNavigateUp () {
+            onBackPressed();
+            Toast.makeText(this.getApplicationContext(), "L'ajout de réunion à été annulé", Toast.LENGTH_LONG).show();
+            return true;
+        }
     }
-}

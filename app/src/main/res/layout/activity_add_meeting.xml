@@ -53,7 +53,7 @@
                 android:id="@+id/about_me"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Thème de la réunion"
+                android:hint="Sujet de la réunion"
                 android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
@@ -62,16 +62,13 @@
             android:id="@+id/date_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:errorEnabled="true">
+            android:layout_margin="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
                 android:cursorVisible="false"
-                android:focusable="false"
                 android:hint="Date de réunion"
                 android:inputType="date" />
 
