@@ -37,6 +37,7 @@ public class CreateDialogPicker implements View.OnClickListener, DatePickerDialo
         year = yearOfDate;
         month = monthOfYear;
         day = dayOfMonth;
+        updateDate();
     }
 
     /**

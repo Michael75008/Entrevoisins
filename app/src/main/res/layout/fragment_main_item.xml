@@ -10,66 +10,64 @@
 
     <ImageView
         android:id="@+id/item_logo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/ic_circle_green"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting_mails"
+        app:layout_constraintEnd_toStartOf="@+id/item_meeting_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="@+id/item_meeting_name" />
 
     <TextView
         android:id="@+id/item_meeting_name"
-        android:layout_width="0dp"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginTop="16dp"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:gravity="start"
         android:onClick="openToast"
+        android:singleLine="true"
+        android:text="Demonstration"
         android:textAlignment="textStart"
         android:textColor="@color/cardview_dark_background"
-        android:textStyle="bold"
-        android:text="Demonstration"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@+id/item_meeting_name"
-        app:layout_constraintEnd_toStartOf="@+id/item_list_delete_button"
-        app:layout_constraintStart_toEndOf="@+id/item_logo"
-        app:layout_constraintTop_toTopOf="@+id/item_logo"
-        tools:ignore="NotSibling"
-        android:gravity="start" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="NotSibling" />
 
     <TextView
         android:id="@+id/item_meeting_mails"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginLeft="@dimen/text_margin"
         android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="13sp"
         android:text="Demo"
         android:textColor="@color/cardview_dark_background"
+        android:textSize="13sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/item_logo"
-        app:layout_constraintEnd_toStartOf="@+id/item_list_delete_button"
-        app:layout_constraintStart_toEndOf="@+id/item_logo" />
+        app:layout_constraintEnd_toEndOf="@+id/item_meeting_name"
+        app:layout_constraintStart_toStartOf="@+id/item_meeting_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_meeting_name" />
 
     <ImageButton
         android:id="@+id/item_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/item_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting_mails"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_logo"
+        app:layout_constraintStart_toEndOf="@+id/item_meeting_name"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting_name"
         app:srcCompat="@drawable/ic_delete_action" />
 
 

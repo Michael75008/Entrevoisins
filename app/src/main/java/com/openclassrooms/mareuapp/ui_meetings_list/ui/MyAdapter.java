@@ -21,8 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,10 +31,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private final List<Meeting> mMeetings;
 
-
     public MyAdapter(List<Meeting> items) {
         this.mMeetings = items;
     }
+
 
     @NonNull
     @Override
@@ -104,12 +102,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             Room room = meeting.getRoom();
             subTitleResult.append(room.getName());
             this.mMeetingName.setText(subTitleResult.toString());
-        }
-
-        private Calendar dateToCalendar(Date date) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            return calendar;
         }
     }
 }

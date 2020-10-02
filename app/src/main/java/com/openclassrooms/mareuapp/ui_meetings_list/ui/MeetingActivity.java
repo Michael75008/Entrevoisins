@@ -95,6 +95,6 @@ public class MeetingActivity extends AppCompatActivity {
 
     private void setActionBar(){
         setSupportActionBar(mToolbar);
-        mToolbar.setOverflowIcon(Objects.requireNonNull(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_navigation_icon)));
+        mToolbar.setOverflowIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_navigation_icon));
     }
 }

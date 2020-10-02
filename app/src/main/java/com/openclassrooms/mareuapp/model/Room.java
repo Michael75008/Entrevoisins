@@ -21,6 +21,11 @@ public class Room implements Serializable {
         this.name = name;
     }
 
+    public Room(int image, String name) {
+        this.image = image;
+        this.name = name;
+    }
+
     public int getImage() {
         return image;
     }
