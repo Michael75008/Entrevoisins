@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.MeetingApiService;
 
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
@@ -57,7 +59,6 @@ public class MeetingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override

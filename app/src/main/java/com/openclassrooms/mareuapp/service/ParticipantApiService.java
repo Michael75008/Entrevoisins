@@ -13,4 +13,6 @@ public interface ParticipantApiService {
      */
     List<Participant> getParticipants();
 
+    List<String> getParticipantsByMail();
+
 }

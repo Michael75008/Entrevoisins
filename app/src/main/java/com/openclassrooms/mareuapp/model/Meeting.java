@@ -54,6 +54,10 @@ public class Meeting implements Serializable {
         mParticipants = participants;
     }
 
+    public Meeting() {
+
+    }
+
 
     public String getName() {
         return name;

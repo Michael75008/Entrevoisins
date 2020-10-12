@@ -10,4 +10,6 @@ public interface RoomApiService {
      * Get all my Rooms
      */
     List<Room> getRooms();
+
+    List<String> getRoomsByName();
 }

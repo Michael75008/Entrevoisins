@@ -1,17 +1,15 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -19,17 +17,12 @@ import android.widget.Toast;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
-import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
-import com.openclassrooms.mareuapp.service.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.RoomApiService;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -42,12 +35,13 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
-    MeetingApiService mApiService;
-    DatePickerDialog mDatePickerDialog;
+    Meeting mMeeting;
+
+
     @BindView(R.id.room_list)
     AutoCompleteTextView mRoomNameAutoCompleteTextView;
     @BindView(R.id.participants_list)
-    MultiAutoCompleteTextView mParticipantsNameAutoCompleteTextView;
+    AutoCompleteTextView mParticipantsNameAutoCompleteTextView;
     @BindView(R.id.date_view)
     TextView mdate;
     @BindView(R.id.time_view)
@@ -61,27 +55,10 @@ public class AddMeetingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_meeting);
         ButterKnife.bind(this);
         setActionBar();
-
-        mRoomApiService = DI.getRoomApiService();
-        mParticipantApiService = DI.getParticipantsApiService();
-
-        List<String> mailsList = new ArrayList<>();
-        List <Participant> mParticipant = mParticipantApiService.getParticipants();
-        for(Participant participant : mParticipant){
-            mailsList.add(participant.getMail());
-        }
-
-        List<String> roomsList = new ArrayList<>();
-        List<Room> mRooms = mRoomApiService.getRooms();
-        for(Room room : mRooms){
-            roomsList.add(room.getName());
-        }
-
-        mRoomNameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(this, R.layout.room_item,R.id.room_name, roomsList));
-
-        mParticipantsNameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(
-                this, R.layout.participants_item, R.id.participant_mail, mailsList));
+        setAdapters();
     }
+
+
 
     @OnTouch(R.id.participants_list)
     boolean onTouch2(View v, MotionEvent event) {
@@ -102,22 +79,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         return (event.getAction() == MotionEvent.ACTION_UP);
     }
 
-    @OnClick(R.id.date_image)
-    public void onDateClick() {
-        final Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-
-        mDatePickerDialog = new DatePickerDialog(AddMeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mdate.setText(dayOfMonth + " - " + (monthOfYear + 1) + " - " + year);
-            }
-        }, year, month, day);
-        mDatePickerDialog.show();
-    }
-
 
     @OnClick(R.id.time_image)
     public void onTimeClick() {
@@ -135,7 +96,6 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private void setActionBar() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Ma Réu - Ajout de Réunion");
     }
 
@@ -143,5 +103,27 @@ public class AddMeetingActivity extends AppCompatActivity {
         onBackPressed();
         Toast.makeText(this.getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_LONG).show();
         return true;
+    }
+
+    private void setAdapters() {
+        List<Room> mRoom;
+        mMeeting = new Meeting();
+        mRoomApiService = DI.getRoomApiService();
+        mParticipantApiService = DI.getParticipantsApiService();
+        mRoom = mRoomApiService.getRooms();
+
+        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(this, mRoom);
+
+        mRoomNameAutoCompleteTextView.setAdapter(customRoomAdapter);
+
+        mParticipantsNameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(
+                this, R.layout.participants_item, R.id.participant_mail, mParticipantApiService.getParticipantsByMail()));
+
+        mRoomNameAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+                mRoomNameAutoCompleteTextView.setText(mRoom.get(position).getName());
+            }
+        });
     }
 }
