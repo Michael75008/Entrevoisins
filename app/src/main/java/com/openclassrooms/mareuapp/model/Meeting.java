@@ -2,7 +2,11 @@
 package com.openclassrooms.mareuapp.model;
 
 
+import com.openclassrooms.mareuapp.R;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +59,14 @@ public class Meeting implements Serializable {
     }
 
     public Meeting() {
-
+        this.id = 99;
+        this.name = "jeff";
+        this.mRoom = new Room(1, R.drawable.ic_circle_pink, "Peach");
+        this.mDate = Calendar.getInstance().getTime();
+        Participant participant = new Participant(1, "maxime@lamzone.com");
+        List<Participant> mParticipant = new ArrayList<>();
+        mParticipant.add(participant);
+        this.mParticipants = mParticipant;
     }
 
 

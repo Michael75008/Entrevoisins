@@ -3,7 +3,6 @@ package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,12 +16,13 @@ import android.widget.Toast;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
-import com.openclassrooms.mareuapp.model.Room;
-import com.openclassrooms.mareuapp.service.ParticipantApiService;
-import com.openclassrooms.mareuapp.service.RoomApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.service.MyValidator;
+import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -35,7 +35,9 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
+    MeetingApiService mApiService;
     Meeting mMeeting;
+    MyValidator myValidor;
 
 
     @BindView(R.id.room_list)
@@ -54,10 +56,16 @@ public class AddMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceStace);
         setContentView(R.layout.activity_add_meeting);
         ButterKnife.bind(this);
+        initData();
         setActionBar();
         setAdapters();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
 
 
     @OnTouch(R.id.participants_list)
@@ -94,6 +102,14 @@ public class AddMeetingActivity extends AppCompatActivity {
         myTimePicker.show();
     }
 
+    void initData() {
+        mMeeting = new Meeting();
+        mRoomApiService = DI.getRoomApiService();
+        mParticipantApiService = DI.getParticipantsApiService();
+        mApiService = DI.getMeetingApiService();
+        myValidor = new MyValidator();
+    }
+
     private void setActionBar() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Ma Réu - Ajout de Réunion");
@@ -106,13 +122,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     private void setAdapters() {
-        List<Room> mRoom;
-        mMeeting = new Meeting();
-        mRoomApiService = DI.getRoomApiService();
-        mParticipantApiService = DI.getParticipantsApiService();
-        mRoom = mRoomApiService.getRooms();
 
-        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(this, mRoom);
+        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(this, mRoomApiService.getRooms());
 
         mRoomNameAutoCompleteTextView.setAdapter(customRoomAdapter);
 
@@ -122,8 +133,17 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRoomNameAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-                mRoomNameAutoCompleteTextView.setText(mRoom.get(position).getName());
+                mRoomNameAutoCompleteTextView.showDropDown();
+                mRoomNameAutoCompleteTextView.setText(mRoomApiService.getRooms().get(position).getName());
             }
         });
     }
+
+    @OnClick(R.id.validate_meeting)
+    public void meetingValidator() {
+    mApiService.createMeeting(mMeeting);
+    finish();
+    }
+
 }
+

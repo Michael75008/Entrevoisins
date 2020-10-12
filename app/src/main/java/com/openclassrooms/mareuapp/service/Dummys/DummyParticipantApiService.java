@@ -1,6 +1,8 @@
-package com.openclassrooms.mareuapp.service;
+package com.openclassrooms.mareuapp.service.Dummys;
 
 import com.openclassrooms.mareuapp.model.Participant;
+import com.openclassrooms.mareuapp.service.Generators.ParticipantApiServiceGenerator;
+import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 
 import java.util.ArrayList;
 import java.util.List;

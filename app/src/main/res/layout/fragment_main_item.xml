@@ -29,7 +29,6 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:gravity="start"
-        android:onClick="openToast"
         android:singleLine="true"
         android:text="Demonstration"
         android:textAlignment="textStart"

@@ -15,17 +15,15 @@ import android.widget.DatePicker;
 
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
-import com.openclassrooms.mareuapp.service.MeetingApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
@@ -33,7 +31,7 @@ import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
 public class MeetingActivity extends AppCompatActivity {
 
-    private MeetingApiService mMeetingApiService;
+    MeetingApiService mMeetingApiService;
     DatePickerDialog picker;
     @BindView(toolbar)
     Toolbar mToolbar;
@@ -49,7 +47,6 @@ public class MeetingActivity extends AppCompatActivity {
         setContentView(activity_list_meeting);
         ButterKnife.bind(this);
         setActionBar();
-        mMeetingApiService = DI.getMeetingApiService();
         initData();
 
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -90,8 +87,14 @@ public class MeetingActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        mMeetingApiService = DI.getMeetingApiService();
         List<Meeting> meetings = mMeetingApiService.getMeetings();
         this.mRecyclerView.setAdapter(new MyAdapter(meetings));
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 
     private void setActionBar(){

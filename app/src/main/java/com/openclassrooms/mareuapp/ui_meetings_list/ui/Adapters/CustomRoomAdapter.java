@@ -1,4 +1,4 @@
-package com.openclassrooms.mareuapp.ui_meetings_list.ui;
+package com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters;
 
 import android.content.Context;
 import android.util.AttributeSet;

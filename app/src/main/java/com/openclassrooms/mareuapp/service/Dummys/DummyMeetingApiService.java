@@ -1,6 +1,8 @@
-package com.openclassrooms.mareuapp.service;
+package com.openclassrooms.mareuapp.service.Dummys;
 
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.service.Generators.MeetingApiServiceGenerator;
+import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 
 import java.util.List;
 

@@ -1,11 +1,10 @@
 package com.openclassrooms.mareuapp.DI;
-import com.openclassrooms.mareuapp.model.Participant;
-import com.openclassrooms.mareuapp.service.DummyMeetingApiService;
-import com.openclassrooms.mareuapp.service.DummyParticipantApiService;
-import com.openclassrooms.mareuapp.service.DummyRoomApiService;
-import com.openclassrooms.mareuapp.service.MeetingApiService;
-import com.openclassrooms.mareuapp.service.ParticipantApiService;
-import com.openclassrooms.mareuapp.service.RoomApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyParticipantApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyRoomApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
 
 
 public class DI {

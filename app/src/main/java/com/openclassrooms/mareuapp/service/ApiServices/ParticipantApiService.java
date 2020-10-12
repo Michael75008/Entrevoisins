@@ -1,4 +1,4 @@
-package com.openclassrooms.mareuapp.service;
+package com.openclassrooms.mareuapp.service.ApiServices;
 
 
 import com.openclassrooms.mareuapp.model.Participant;
