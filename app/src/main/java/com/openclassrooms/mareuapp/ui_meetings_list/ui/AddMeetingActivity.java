@@ -37,7 +37,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     ParticipantApiService mParticipantApiService;
     MeetingApiService mApiService;
     Meeting mMeeting;
-    MyValidator myValidor;
+    MyValidator mMyValidator;
 
 
     @BindView(R.id.room_list)
@@ -107,7 +107,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRoomApiService = DI.getRoomApiService();
         mParticipantApiService = DI.getParticipantsApiService();
         mApiService = DI.getMeetingApiService();
-        myValidor = new MyValidator();
+        mMyValidator = new MyValidator();
     }
 
     private void setActionBar() {
@@ -117,7 +117,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        Toast.makeText(this.getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -143,6 +143,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     public void meetingValidator() {
     mApiService.createMeeting(mMeeting);
     finish();
+    mMyValidator.checkRoom();
+    Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
     }
 
 }
