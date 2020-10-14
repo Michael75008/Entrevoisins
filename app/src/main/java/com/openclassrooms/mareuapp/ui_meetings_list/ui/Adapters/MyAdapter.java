@@ -1,5 +1,6 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,16 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,9 +29,12 @@ import butterknife.ButterKnife;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private final List<Meeting> mMeetings;
+    Context mContext;
 
-    public MyAdapter(List<Meeting> items) {
+    public MyAdapter(List<Meeting> items, Context context) {
         this.mMeetings = items;
+        this.mContext = context;
+
     }
 
 
@@ -54,10 +56,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.mMeetingMarker);
 
-        viewHolder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
+        viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mMeetings.remove(viewHolder.getAdapterPosition());
+                notifyItemRemoved(viewHolder.getAdapterPosition());
+                Toast.makeText(mContext, "La réunion a été supprimée", Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
-    @Override
+        @Override
     public int getItemCount() {
         return mMeetings.size();
     }

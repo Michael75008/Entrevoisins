@@ -1,6 +1,5 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -10,19 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-import com.openclassrooms.mareuapp.service.MyValidator;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
+import com.openclassrooms.mareuapp.service.MyValidator;
+import com.openclassrooms.mareuapp.service.Pickers.Pickers;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -38,6 +36,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     MeetingApiService mApiService;
     Meeting mMeeting;
     MyValidator mMyValidator;
+    Pickers mPickers;
 
 
     @BindView(R.id.room_list)
@@ -50,6 +49,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     TextView mTime;
     @BindView(R.id.meeting_topic)
     EditText mMeetingName;
+    @BindView(R.id.room_item)
+    TextView mRoomName;
 
 
     protected void onCreate(Bundle savedInstanceStace) {
@@ -90,16 +91,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @OnClick(R.id.time_image)
     public void onTimeClick() {
-        final Calendar c = Calendar.getInstance();
-        int mHour = c.get(Calendar.HOUR_OF_DAY);
-        int mMinute = c.get(Calendar.MINUTE);
-        TimePickerDialog myTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mTime.setText(hourOfDay + " : " + minute);
-            }
-        }, mHour, mMinute, false);
-        myTimePicker.show();
+        mPickers.onTimeClick();
     }
 
     void initData() {
@@ -107,7 +99,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRoomApiService = DI.getRoomApiService();
         mParticipantApiService = DI.getParticipantsApiService();
         mApiService = DI.getMeetingApiService();
-        mMyValidator = new MyValidator();
+        mMyValidator = new MyValidator(this, mMeeting);
+        mPickers = new Pickers();
+
     }
 
     private void setActionBar() {
@@ -141,11 +135,9 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @OnClick(R.id.validate_meeting)
     public void meetingValidator() {
-    mApiService.createMeeting(mMeeting);
-    finish();
-    mMyValidator.checkRoom();
-    Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
+        mApiService.createMeeting(mMeeting);
+        finish();
+        Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
     }
-
 }
 

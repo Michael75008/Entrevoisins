@@ -41,6 +41,7 @@ public class MeetingActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +78,8 @@ public class MeetingActivity extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 }
             }, year, month, day);
-           picker.show();
-        }
-
-        else if (id == R.id.filterbyplace) {
+            picker.show();
+        } else if (id == R.id.filterbyplace) {
             return false;
         }
         return super.onOptionsItemSelected(item);
@@ -89,16 +88,18 @@ public class MeetingActivity extends AppCompatActivity {
     private void initData() {
         mMeetingApiService = DI.getMeetingApiService();
         List<Meeting> meetings = mMeetingApiService.getMeetings();
-        this.mRecyclerView.setAdapter(new MyAdapter(meetings));
+        this.mRecyclerView.setAdapter(new MyAdapter(meetings, this));
     }
+
     @Override
     public void onResume() {
         super.onResume();
         initData();
     }
 
-    private void setActionBar(){
+    private void setActionBar() {
         setSupportActionBar(mToolbar);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_navigation_icon));
     }
+
 }

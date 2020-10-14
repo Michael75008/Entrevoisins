@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class Pickers extends AppCompatActivity {
     @BindView(R.id.date_image)
@@ -40,30 +41,18 @@ public class Pickers extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meeting);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this);}
 
-
-
-        //Pick time's click event listener
-        mTimeButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        //PickDate's click event listener
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            }
-        });
-
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        mhour = c.get(Calendar.HOUR_OF_DAY);
-        mminute = c.get(Calendar.MINUTE);
-    }
-
+        public void onTimeClick() {
+            final Calendar c = Calendar.getInstance();
+            int mHour = c.get(Calendar.HOUR_OF_DAY);
+            int mMinute = c.get(Calendar.MINUTE);
+            TimePickerDialog myTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    mTimeDisplay.setText(hourOfDay + " : " + minute);
+                }
+            }, mHour, mMinute, false);
+            myTimePicker.show();
+        }
 }
