@@ -17,6 +17,7 @@ import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.service.Pickers.CreateDialogPicker;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 
 import java.util.Calendar;
@@ -29,7 +30,7 @@ import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
 import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
-public class MeetingActivity extends AppCompatActivity {
+public class MeetingActivity extends AppCompatActivity  {
 
     MeetingApiService mMeetingApiService;
     DatePickerDialog picker;
@@ -101,5 +102,4 @@ public class MeetingActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_navigation_icon));
     }
-
 }

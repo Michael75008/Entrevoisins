@@ -52,8 +52,8 @@ public class CustomRoomAdapter extends ArrayAdapter<Room> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
         convertView = this.mLayoutInflater.inflate(R.layout.room_item, parent, false);
-            TextView mRoomName = (TextView) convertView.findViewById(R.id.room_name);
-            ImageView mRoomColor = (ImageView) convertView.findViewById(R.id.room_color);
+            TextView mRoomName = convertView.findViewById(R.id.room_name);
+            ImageView mRoomColor = convertView.findViewById(R.id.room_color);
             Room room = mRoomList.get(position) ;
             if(room != null) {
                 mRoomName.setText(room.getName());

@@ -20,4 +20,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="AppName">Ma Réu</string>
     <string name="RoomValidator">Veuillez selectionner une salle</string>
+    <string name="filtrer_par_date">Filtrer par date</string>
+    <string name="selectionnez_une_chambre">Selectionnez une chambre</string>
 </resources>

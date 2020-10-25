@@ -24,14 +24,17 @@
             android:id="@+id/room_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="28dp"
             android:layout_marginRight="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/room_list"
             app:layout_constraintEnd_toEndOf="@+id/room_list"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/room_list"
-            app:layout_constraintTop_toBottomOf="@+id/room_list" />
+            app:layout_constraintTop_toTopOf="@+id/room_list" />
 
-        <AutoCompleteTextView
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
             android:id="@+id/room_list"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
@@ -39,7 +42,6 @@
             app:layout_constraintEnd_toEndOf="@+id/meeting_topic"
             app:layout_constraintStart_toStartOf="@+id/meeting_topic"
             app:layout_constraintTop_toBottomOf="@+id/meeting_topic" />
-
 
         <ImageButton
             android:id="@+id/date_image"
@@ -87,6 +89,7 @@
 
         <MultiAutoCompleteTextView
             android:id="@+id/participants_list"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
@@ -99,11 +102,12 @@
             android:id="@+id/participant_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="28dp"
             android:layout_marginRight="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/participants_list"
             app:layout_constraintEnd_toEndOf="@+id/participants_list"
             app:layout_constraintStart_toStartOf="@+id/participants_list"
-            app:layout_constraintTop_toBottomOf="@+id/participants_list" />
+            app:layout_constraintTop_toTopOf="@+id/participants_list" />
 
         <Button
             android:id="@+id/validate_meeting"

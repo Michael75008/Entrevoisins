@@ -9,11 +9,9 @@ import com.openclassrooms.mareuapp.model.Meeting;
 public class MyValidator {
 
     Context mContext;
-    Meeting mMeeting = new Meeting();
 
     public MyValidator(Context context, Meeting meeting) {
         this.mContext = context;
-        this.mMeeting = meeting;
     }
 
 

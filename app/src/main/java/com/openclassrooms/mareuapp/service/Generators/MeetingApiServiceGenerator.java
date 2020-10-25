@@ -14,8 +14,6 @@ import static java.util.Arrays.asList;
 
 public abstract class MeetingApiServiceGenerator {
 
-    ArrayList<Participant> mParticipants = new ArrayList<>();
-
     public static List<Meeting> DUMMY_MEETINGS = asList(
 
 
