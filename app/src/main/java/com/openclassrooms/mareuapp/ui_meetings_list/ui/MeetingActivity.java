@@ -1,23 +1,23 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-import com.openclassrooms.mareuapp.service.Pickers.CreateDialogPicker;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 
 import java.util.Calendar;
@@ -30,7 +30,7 @@ import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
 import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
-public class MeetingActivity extends AppCompatActivity  {
+public class MeetingActivity extends AppCompatActivity {
 
     MeetingApiService mMeetingApiService;
     DatePickerDialog picker;
@@ -42,7 +42,6 @@ public class MeetingActivity extends AppCompatActivity  {
     RecyclerView mRecyclerView;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +50,12 @@ public class MeetingActivity extends AppCompatActivity  {
         setActionBar();
         initData();
 
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MeetingActivity.this, AddMeetingActivity.class);
-                startActivity(intent);
-            }
+        mFloatingActionButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MeetingActivity.this, AddMeetingActivity.class);
+            startActivity(intent);
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

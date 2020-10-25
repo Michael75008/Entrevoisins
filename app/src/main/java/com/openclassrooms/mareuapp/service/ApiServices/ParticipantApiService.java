@@ -9,9 +9,8 @@ public interface ParticipantApiService {
 
 
     /**
-     * Get List of Participants
+     * Get List of Participants called by their mail
      */
-    List<Participant> getParticipants();
 
     List<String> getParticipantsByMail();
 

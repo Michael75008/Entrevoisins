@@ -1,13 +1,9 @@
 package com.openclassrooms.mareuapp.service.Pickers;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.DatePicker;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -18,7 +14,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class Pickers extends AppCompatActivity {
     @BindView(R.id.date_image)

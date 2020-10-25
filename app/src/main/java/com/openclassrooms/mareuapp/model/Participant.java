@@ -16,6 +16,10 @@ public class Participant implements Serializable {
         this.Mail = email;
     }
 
+    public Participant(String email){
+        this.Mail = email;
+    }
+
     public String getMail() {
         return Mail;
     }

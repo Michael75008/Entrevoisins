@@ -1,39 +1,34 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.SpannableStringBuilder;
-import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
 import com.openclassrooms.mareuapp.service.MyValidator;
 import com.openclassrooms.mareuapp.service.Pickers.Pickers;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -42,7 +37,7 @@ import butterknife.OnClick;
 import butterknife.OnTouch;
 
 
-public class AddMeetingActivity extends AppCompatActivity {
+public class AddMeetingActivity extends AppCompatActivity implements RecyclerItemSelectedListener, View.OnClickListener {
 
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
@@ -50,23 +45,24 @@ public class AddMeetingActivity extends AppCompatActivity {
     Meeting mMeeting;
     MyValidator mMyValidator;
     Pickers mPickers;
+    CustomParticipantAdapter recyclerAdapter;
+    List<String> mParticipantList;
 
 
     @BindView(R.id.room_list)
     AutoCompleteTextView mRoomNameAutoCompleteTextView;
-    @BindView(R.id.participants_list)
-    MultiAutoCompleteTextView mParticipantsNameAutoCompleteTextView;
     @BindView(R.id.date_view)
     TextView mdate;
     @BindView(R.id.time_view)
     TextView mTime;
     @BindView(R.id.meeting_topic)
-    EditText mMeetingName;
+    EditText mName;
     @BindView(R.id.room_item)
     TextView mRoomName;
-    @BindView(R.id.participant_item)
-    TextView mParticipantsName;
-
+    @BindView(R.id.participant_recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.participants_list)
+    ChipGroup mChipGroup;
 
 
     protected void onCreate(Bundle savedInstanceStace) {
@@ -75,7 +71,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
         setActionBar();
-        setAdapters();
+        setRoomsAdapter();
+        setParticipantsAdapters();
     }
 
     @Override
@@ -85,15 +82,6 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
 
-    @OnTouch(R.id.participants_list)
-    boolean onTouch2(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mParticipantsNameAutoCompleteTextView.showDropDown();
-            return true;
-        }
-        return (event.getAction() == MotionEvent.ACTION_UP);
-    }
-
     @OnTouch(R.id.room_list)
     boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -101,7 +89,6 @@ public class AddMeetingActivity extends AppCompatActivity {
             return true;
         }
         return (event.getAction() == MotionEvent.ACTION_UP);
-
     }
 
 
@@ -117,6 +104,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         mApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator(this, mMeeting);
         mPickers = new Pickers();
+        mParticipantList = mParticipantApiService.getParticipantsByMail();
     }
 
     private void setActionBar() {
@@ -130,18 +118,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         return true;
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void setAdapters() {
-
+    private void setRoomsAdapter() {
         CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(this, mRoomApiService.getRooms());
-
         mRoomNameAutoCompleteTextView.setAdapter(customRoomAdapter);
-
-        mParticipantsNameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(
-                this, R.layout.participants_item, R.id.participant_mail, mParticipantApiService.getParticipantsByMail()));
-        
-
         mRoomNameAutoCompleteTextView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
@@ -151,14 +130,39 @@ public class AddMeetingActivity extends AppCompatActivity {
                 mRoomNameAutoCompleteTextView.setHint(null);
             }
         });
-
     }
+
+    private void setParticipantsAdapters() {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setHasFixedSize(true);
+        recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList);
+        mRecyclerView.setAdapter(recyclerAdapter);
+    }
+
 
     @OnClick(R.id.validate_meeting)
     public void meetingValidator() {
         mApiService.createMeeting(mMeeting);
         finish();
         Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemSelected(String participant) {
+        Chip chip = new Chip(this);
+        chip.setText(participant);
+        chip.setCloseIconVisible(true);
+        chip.setCheckable(false);
+        chip.setClickable(false);
+        chip.setOnCloseIconClickListener(this);
+        mChipGroup.addView(chip);
+        mChipGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Chip chip = (Chip) view;
+        mChipGroup.removeView(chip);
     }
 }
 

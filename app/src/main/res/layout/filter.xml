@@ -3,7 +3,7 @@
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent">
 
-<android.support.design.widget.TextInputEditText
+<com.google.android.material.textfield.TextInputEditText
     android:id="@+id/date_filter"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
