@@ -14,6 +14,7 @@ import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.AddMeetingActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomParticipantAdapter.MyViewHolder> {
@@ -21,6 +22,7 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     private Context mContext;
     private List<String> mParticipantsList;
     private RecyclerItemSelectedListener mRecyclerItemSelectedListener;
+
 
     public CustomParticipantAdapter(Context context, List<String> participantList) {
         this.mContext = context;
@@ -58,15 +60,11 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
             ParticipantsName = view.findViewById(R.id.participant_mail);
             RootView = view.findViewById(R.id.participant_list_linear_layout);
             RootView.setOnClickListener(this);
-
         }
 
         @Override
         public void onClick(View view) {
             mRecyclerItemSelectedListener.onItemSelected(mParticipantsList.get(getAdapterPosition()));
-            mParticipantsList.remove(mParticipantsList.get(getAdapterPosition()));
-        }
+            mParticipantsList.remove(mParticipantsList.get(getAdapterPosition())); }
     }
-
-
 }

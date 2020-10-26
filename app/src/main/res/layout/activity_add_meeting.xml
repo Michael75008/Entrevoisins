@@ -28,7 +28,6 @@
             android:layout_marginRight="24dp"
             app:layout_constraintBottom_toBottomOf="@+id/room_list"
             app:layout_constraintEnd_toEndOf="@+id/room_list"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/room_list"
             app:layout_constraintTop_toTopOf="@+id/room_list" />
 
@@ -45,7 +44,7 @@
 
         <ImageButton
             android:id="@+id/date_image"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="24dp"
             android:scaleType="centerCrop"
@@ -54,33 +53,34 @@
             app:layout_constraintStart_toStartOf="@+id/participant_recycler_view"
             app:layout_constraintTop_toBottomOf="@+id/participant_recycler_view" />
 
-        <TextView
-            android:id="@+id/time_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:hint="Cliquez sur l'horloge pour définir l'heure"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/time_image"
-            app:layout_constraintStart_toStartOf="@+id/time_image"
-            app:layout_constraintTop_toBottomOf="@+id/time_image" />
-
         <Button
             android:id="@+id/validate_meeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_margin="24dp"
+            android:textSize="16sp"
             android:text="Valider la réunion"
             app:layout_constraintEnd_toEndOf="@+id/time_view"
             app:layout_constraintStart_toStartOf="@+id/time_view"
             app:layout_constraintTop_toBottomOf="@+id/time_view" />
 
+        <TextView
+            android:id="@+id/date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:hint="Cliquez sur le calendrier pour définir la date"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/date_image"
+            app:layout_constraintStart_toStartOf="@+id/date_image"
+            app:layout_constraintTop_toBottomOf="@+id/date_image" />
+
         <ImageButton
             android:id="@+id/time_image"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="40dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_time_icon_foreground"
             app:layout_constraintEnd_toEndOf="@+id/date_image"
@@ -88,16 +88,16 @@
             app:layout_constraintTop_toBottomOf="@+id/date_image" />
 
         <TextView
-            android:id="@+id/date_view"
+            android:id="@+id/time_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:gravity="center"
-            android:hint="Cliquez sur le calendrier pour définir la date"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/date_image"
-            app:layout_constraintStart_toStartOf="@+id/date_image"
-            app:layout_constraintTop_toBottomOf="@+id/date_image" />
+            android:hint="Cliquez sur l'horloge pour définir l'heure"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/time_image"
+            app:layout_constraintStart_toStartOf="@+id/time_image"
+            app:layout_constraintTop_toBottomOf="@+id/time_image" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/participants_list"
@@ -122,7 +122,6 @@
             android:textAlignment="center"
             android:hint="Selectionnez les participants"
             app:layout_constraintEnd_toEndOf="@+id/room_item"
-            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="@+id/room_item"
             app:layout_constraintTop_toBottomOf="@+id/participants_list"
             android:gravity="center_horizontal" />
