@@ -1,5 +1,7 @@
 package com.openclassrooms.mareuapp.model;
 
+import com.google.android.material.chip.Chip;
+
 import java.io.Serializable;
 
 /**
@@ -11,13 +13,14 @@ public class Participant implements Serializable {
 
     private String Mail;
 
-    public Participant(int id, String email) {
-        Id = id;
-        this.Mail = email;
-    }
+    private Chip mChip;
 
     public Participant(String email){
         this.Mail = email;
+    }
+
+    public Participant(Chip childAt) {
+        this.mChip = childAt;
     }
 
     public String getMail() {

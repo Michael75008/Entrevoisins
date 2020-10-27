@@ -23,6 +23,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.model.Participant;
+import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
@@ -32,7 +34,9 @@ import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipan
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +52,9 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
     ParticipantApiService mParticipantApiService;
     MeetingApiService mApiService;
     Meeting mMeeting;
-
+    Room mRoomValidator;
+    Date mDateValidator;
+    List<Participant> mParticipantsValidator;
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
     List<String> mParticipantList;
@@ -69,7 +75,6 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
     RecyclerView mRecyclerView;
     @BindView(R.id.participants_list)
     ChipGroup mChipGroup;
-
 
     protected void onCreate(Bundle savedInstanceStace) {
         super.onCreate(savedInstanceStace);
@@ -100,6 +105,9 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mdate.setText("Date de réunion choisie : " + dayOfMonth + "/" + (mDatePicker.getDatePicker().getMonth()+1) + "/" + year);
+                mDateValidator.setDate(dayOfMonth);
+                mDateValidator.setMonth(monthOfYear);
+                mDateValidator.setYear(year);
             }
         }, year, month, day);
         mDatePicker.show();
@@ -115,6 +123,8 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 mTime.setText("Heure de réunion choisie :" + selectedHour + ":" + selectedMinute);
+                mDateValidator.setHours(selectedHour);
+                mDateValidator.setMinutes(selectedMinute);
             }
         },hour, minute, true);
         mTimePicker.show();
@@ -126,7 +136,9 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mParticipantApiService = DI.getParticipantsApiService();
         mApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator(this, mMeeting);
+        mDateValidator = new Date();
         mParticipantList = mParticipantApiService.getParticipantsByMail();
+        mParticipantsValidator = new ArrayList<Participant>();
     }
 
     private void setActionBar() {
@@ -147,6 +159,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
                 String roomChoice = mRoomApiService.getRooms().get(position).getName();
+                mRoomValidator = mRoomApiService.getRooms().get(position);
                 mRoomName.setText(roomChoice);
                 mRoomNameAutoCompleteTextView.setText(null);
                 mRoomNameAutoCompleteTextView.setHint(null);
@@ -161,14 +174,6 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mRecyclerView.setAdapter(recyclerAdapter);
     }
 
-
-    @OnClick(R.id.validate_meeting)
-    public void meetingValidator() {
-        mApiService.createMeeting(mMeeting);
-        finish();
-        Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
-    }
-
     @Override
     public void onItemSelected(String participant) {
         Chip chip = new Chip(this);
@@ -179,6 +184,8 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         chip.setOnCloseIconClickListener(this);
         mChipGroup.addView(chip);
         mChipGroup.setVisibility(View.VISIBLE);
+        Participant participant1 = new Participant(participant);
+        mParticipantsValidator.add(participant1);
     }
 
     @Override
@@ -187,13 +194,19 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mChipGroup.removeView(chip);
     }
 
-    public List<String> getSelectedParticipants() {
-        List<String> emails = new ArrayList<>();
-        for (int i = 0; i < mChipGroup.getChildCount(); i++) {
-            String email = ((Chip) mChipGroup.getChildAt(i)).getText().toString();
-            emails.add(email);
-        }
-        return emails;
+    @OnClick(R.id.validate_meeting)
+    public void meetingValidator() {
+        mMeeting = new Meeting(
+                666,
+                mName.getText().toString(),
+                mRoomValidator,
+                mDateValidator,
+                mParticipantsValidator
+        );
+
+        mApiService.createMeeting(mMeeting);
+        finish();
+        Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
     }
 }
 
