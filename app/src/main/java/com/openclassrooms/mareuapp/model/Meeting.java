@@ -52,11 +52,9 @@ public class Meeting implements Serializable {
         this.mDate = date;
         this.mRoom= room;
         mParticipants = participants;
-
     }
 
     public Meeting() {
-
     }
 
 
@@ -67,9 +65,8 @@ public class Meeting implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public Date getDate() {
-        return mDate;
-    }
+
+    public Date getDate() { return mDate; }
 
     public void setDate(Date date) {
         mDate = date;

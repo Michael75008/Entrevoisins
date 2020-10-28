@@ -10,6 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
+import com.openclassrooms.mareuapp.model.ValidatorModel;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
@@ -135,7 +137,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mRoomApiService = DI.getRoomApiService();
         mParticipantApiService = DI.getParticipantsApiService();
         mApiService = DI.getMeetingApiService();
-        mMyValidator = new MyValidator(this, mMeeting);
+        mMyValidator = new MyValidator();
         mDateValidator = new Date();
         mParticipantList = mParticipantApiService.getParticipantsByMail();
         mParticipantsValidator = new ArrayList<Participant>();
@@ -203,10 +205,14 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
                 mDateValidator,
                 mParticipantsValidator
         );
-
+        ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);
+        if(!validatorMessage.isValid()){
         mApiService.createMeeting(mMeeting);
         finish();
         Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
+    } else  {
+            Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }
 

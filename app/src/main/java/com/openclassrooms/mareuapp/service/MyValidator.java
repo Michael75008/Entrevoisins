@@ -1,37 +1,65 @@
 package com.openclassrooms.mareuapp.service;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.model.ValidatorModel;
+
+import java.util.Date;
 
 
 public class MyValidator {
 
-    Context mContext;
+    Date mDate = new Date();
 
-    public MyValidator(Context context, Meeting meeting) {
-        this.mContext = context;
+    public ValidatorModel checkMeeting(Meeting meeting) {
+        if (checkName(meeting).isValid()) {
+            return checkName(meeting);
+        }
+        else if (checkRoom(meeting).isValid()){
+            checkRoom(meeting);}
+        else if (checkParticipants(meeting).isValid()){
+            checkParticipants(meeting);
+        }
+        else if (checkDate(meeting).isValid()){
+            checkDate(meeting); }
+
+            return checkResult(meeting);
     }
 
-
-    public void checkResult() {
+    public ValidatorModel checkResult(Meeting meeting){
+        if(meeting.getParticipants().isEmpty() || meeting.getDate().equals(mDate) || meeting.getName().isEmpty() || meeting.getRoom().getName() == null){
+            return new ValidatorModel(true, "Merci de renseigner toutes les informations avant de valider");
+        }
+           return new ValidatorModel(false, "");
     }
 
-    public void checkName() {
+    public ValidatorModel checkName(Meeting meeting) {
+        if (meeting.getName().isEmpty()  && meeting.getName() == null) {
+            return new ValidatorModel(true, "Renseignez un nom de réunion avant de valider");
+        }
+        return new ValidatorModel(false, "");
     }
 
-    public void checkRoom() {
-        Toast.makeText(mContext, "coucou", Toast.LENGTH_LONG).show();
+    public ValidatorModel checkRoom(Meeting meeting) {
+        if (meeting.getRoom().getName() == null && meeting.getRoom() == null) {
+            return new ValidatorModel(true, "Renseignez une salle de réunion avant de valider");
+        } else {
+            return new ValidatorModel(false, "");
+        }
     }
 
-
-    public void checkParticipants() {
+    public ValidatorModel checkParticipants(Meeting meeting) {
+        if (meeting.getParticipants().size() == 0) {
+            return new ValidatorModel(true, "Selectionnez au moins un participant avant de valider");
+        } else {
+            return new ValidatorModel(false, "");
+        }
     }
 
-    public void checkDate() {
-    }
-
-    public void checkHour() {
+    public ValidatorModel checkDate(Meeting meeting) {
+        if (meeting.getDate().equals(mDate)) {
+            return new ValidatorModel(true, "Selectionnez une date et heure de réunion avant de valider");
+        } else {
+            return new ValidatorModel(false, "");
+        }
     }
 }

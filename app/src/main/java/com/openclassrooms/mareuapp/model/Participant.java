@@ -15,12 +15,17 @@ public class Participant implements Serializable {
 
     private Chip mChip;
 
-    public Participant(String email){
+    public Participant(int id, String email){
+        this.Id = id;
         this.Mail = email;
     }
 
     public Participant(Chip childAt) {
         this.mChip = childAt;
+    }
+
+    public Participant(String participant) {
+        this.Mail = participant;
     }
 
     public String getMail() {
