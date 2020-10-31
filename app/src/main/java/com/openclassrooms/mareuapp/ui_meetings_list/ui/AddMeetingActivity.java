@@ -3,6 +3,7 @@ package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +11,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.Utils.ItemClickSupport;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
@@ -36,7 +37,6 @@ import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipan
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +48,7 @@ import butterknife.OnClick;
 import butterknife.OnTouch;
 
 
-public class AddMeetingActivity extends AppCompatActivity implements RecyclerItemSelectedListener, View.OnClickListener {
+public class AddMeetingActivity extends AppCompatActivity {
 
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
@@ -59,7 +59,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
     List<Participant> mParticipantsValidator;
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
-    List<String> mParticipantList;
+    List<Participant> mParticipantList;
     DatePickerDialog mDatePicker;
     TimePickerDialog mTimePicker;
 
@@ -86,6 +86,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         setActionBar();
         setRoomsAdapter();
         setParticipantsAdapters();
+        this.confirgureOnClickRecyclerView();
     }
 
     @OnTouch(R.id.room_list)
@@ -98,7 +99,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
     }
 
     @OnClick(R.id.date_image)
-    public void onDateClick(){
+    public void onDateClick() {
         final Calendar cldr = Calendar.getInstance();
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int month = cldr.get(Calendar.MONTH);
@@ -106,7 +107,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mDatePicker = new DatePickerDialog(AddMeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mdate.setText("Date de réunion choisie : " + dayOfMonth + "/" + (mDatePicker.getDatePicker().getMonth()+1) + "/" + year);
+                mdate.setText("Date de réunion choisie : " + dayOfMonth + "/" + (mDatePicker.getDatePicker().getMonth() + 1) + "/" + year);
                 mDateValidator.setDate(dayOfMonth);
                 mDateValidator.setMonth(monthOfYear);
                 mDateValidator.setYear(year);
@@ -128,7 +129,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
                 mDateValidator.setHours(selectedHour);
                 mDateValidator.setMinutes(selectedMinute);
             }
-        },hour, minute, true);
+        }, hour, minute, true);
         mTimePicker.show();
     }
 
@@ -139,7 +140,7 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
         mApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator();
         mDateValidator = new Date();
-        mParticipantList = mParticipantApiService.getParticipantsByMail();
+        mParticipantList = mParticipantApiService.getParticipants();
         mParticipantsValidator = new ArrayList<Participant>();
     }
 
@@ -171,30 +172,12 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
 
     private void setParticipantsAdapters() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mRecyclerView.setHasFixedSize(true);
         recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList);
         mRecyclerView.setAdapter(recyclerAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        confirgureOnClickRecyclerView();
     }
 
-    @Override
-    public void onItemSelected(String participant) {
-        Chip chip = new Chip(this);
-        chip.setText(participant);
-        chip.setCloseIconVisible(true);
-        chip.setCheckable(false);
-        chip.setClickable(false);
-        chip.setOnCloseIconClickListener(this);
-        mChipGroup.addView(chip);
-        mChipGroup.setVisibility(View.VISIBLE);
-        Participant participant1 = new Participant(participant);
-        mParticipantsValidator.add(participant1);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Chip chip = (Chip) view;
-        mChipGroup.removeView(chip);
-    }
 
     @OnClick(R.id.validate_meeting)
     public void meetingValidator() {
@@ -206,13 +189,40 @@ public class AddMeetingActivity extends AppCompatActivity implements RecyclerIte
                 mParticipantsValidator
         );
         ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);
-        if(!validatorMessage.isValid()){
-        mApiService.createMeeting(mMeeting);
-        finish();
-        Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
-    } else  {
-            Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_LONG).show();
-        }
+        if (!validatorMessage.isValid()) {
+            mApiService.createMeeting(mMeeting);
+            finish();
+            Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
+        } else { Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_LONG).show(); } }
+
+    private void confirgureOnClickRecyclerView() {
+        ItemClickSupport.addTo(mRecyclerView, R.id.participant_recycler_view)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        Participant participant = recyclerAdapter.getUser(position);
+                        mParticipantList.remove(participant);
+                        recyclerAdapter.notifyDataSetChanged();
+                        Chip chip = new Chip(mChipGroup.getContext());
+                        chip.setText(participant.getMail().toString());
+                        chip.setCloseIconVisible(true);
+                        chip.setCheckable(false);
+                        chip.setClickable(false);
+                        mChipGroup.addView(chip);
+                        mChipGroup.setVisibility(View.VISIBLE);
+                        mParticipantsValidator.add(participant);
+
+                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mChipGroup.removeView(view);
+                                mParticipantList.add(participant);
+                                recyclerAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }
+                });
     }
 }
 

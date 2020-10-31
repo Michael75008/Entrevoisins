@@ -28,6 +28,10 @@ public class Participant implements Serializable {
         this.Mail = participant;
     }
 
+    public Participant() {
+
+    }
+
     public String getMail() {
         return Mail;
     }

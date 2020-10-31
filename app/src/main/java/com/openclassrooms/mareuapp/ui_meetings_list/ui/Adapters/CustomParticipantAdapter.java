@@ -11,23 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.AddMeetingActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomParticipantAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<String> mParticipantsList;
-    private RecyclerItemSelectedListener mRecyclerItemSelectedListener;
+    private List<Participant> mParticipantsList;
 
 
-    public CustomParticipantAdapter(Context context, List<String> participantList) {
+    public CustomParticipantAdapter(Context context, List<Participant> participantList) {
         this.mContext = context;
         this.mParticipantsList = participantList;
-        mRecyclerItemSelectedListener = (AddMeetingActivity) context;
     }
 
     @NonNull
@@ -41,8 +39,8 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
-        holder.ParticipantsName.setText(mParticipantsList.get(position));
+        String mName = mParticipantsList.get(position).getMail();
+        holder.ParticipantsName.setText(mName);
     }
 
     @Override
@@ -50,21 +48,21 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
         return mParticipantsList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder  {
 
         TextView ParticipantsName;
         LinearLayout RootView;
+        RecyclerView mRecyclerView;
 
         public MyViewHolder(View view) {
             super(view);
             ParticipantsName = view.findViewById(R.id.participant_mail);
             RootView = view.findViewById(R.id.participant_list_linear_layout);
-            RootView.setOnClickListener(this);
-        }
 
-        @Override
-        public void onClick(View view) {
-            mRecyclerItemSelectedListener.onItemSelected(mParticipantsList.get(getAdapterPosition()));
-            mParticipantsList.remove(mParticipantsList.get(getAdapterPosition())); }
+        }
+    }
+
+    public Participant getUser(int position) {
+        return mParticipantsList.get(position);
     }
 }

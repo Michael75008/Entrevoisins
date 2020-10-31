@@ -77,6 +77,7 @@ public class MeetingActivity extends AppCompatActivity {
                 }
             }, year, month, day);
             picker.show();
+            picker.getDatePicker().setMinDate(System.currentTimeMillis());
         } else if (id == R.id.filterbyplace) {
             return false;
         }

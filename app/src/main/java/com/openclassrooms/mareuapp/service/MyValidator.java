@@ -11,16 +11,9 @@ public class MyValidator {
     Date mDate = new Date();
 
     public ValidatorModel checkMeeting(Meeting meeting) {
-        return checkResult(meeting);
+        return checkName(meeting);
     }
 
-
-    public ValidatorModel checkResult(Meeting meeting) {
-        if (meeting.getParticipants().isEmpty() || meeting.getDate().equals(mDate) || meeting.getName().isEmpty() || meeting.getRoom() == null) {
-            return checkName(meeting);
-        }
-        return new ValidatorModel(false, "");
-    }
 
     public ValidatorModel checkName(Meeting meeting) {
         if (meeting.getName().isEmpty()) {
@@ -49,7 +42,7 @@ public class MyValidator {
         if (meeting.getDate().equals(mDate)) {
             return new ValidatorModel(true, "Selectionnez une date et heure de réunion avant de valider");
         } else {
-            return checkResult(meeting);
-        }
+            return new ValidatorModel(false, "");}
     }
+    
 }
