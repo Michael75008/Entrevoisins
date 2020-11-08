@@ -18,7 +18,9 @@
             android:hint="Topic de la réunion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:maxLines="1"
+            android:maxLength="20"/>
 
         <TextView
             android:id="@+id/room_item"

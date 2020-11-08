@@ -1,12 +1,9 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.Utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,14 +31,18 @@ import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
 public class MeetingActivity extends AppCompatActivity {
 
-    MeetingApiService mMeetingApiService;
-    DatePickerDialog picker;
     @BindView(toolbar)
     Toolbar mToolbar;
     @BindView(fab_add_meeting)
     FloatingActionButton mFloatingActionButton;
     @BindView(R.id.list_meetings)
     RecyclerView mRecyclerView;
+
+    MeetingApiService mMeetingApiService;
+    MyAdapter mMyAdapter;
+    List<Meeting> mMeetings;
+    Pickers mPickers;
+    GregorianCalendar c;
 
 
     @Override
@@ -65,29 +68,50 @@ public class MeetingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.filterbydate) {
-            final Calendar cldr = Calendar.getInstance();
-            int day = cldr.get(Calendar.DAY_OF_MONTH);
-            int month = cldr.get(Calendar.MONTH);
-            int year = cldr.get(Calendar.YEAR);
-            picker = new DatePickerDialog(MeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                }
-            }, year, month, day);
-            picker.show();
-            picker.getDatePicker().setMinDate(System.currentTimeMillis());
-        } else if (id == R.id.filterbyplace) {
-            return false;
+        switch (item.getItemId()) {
+            case R.id.getallmeetings:
+                initData();
+                return true;
+
+            case R.id.filterbydate:
+                mPickers.showCalendar(this, (datePicker, year, month, day) -> {
+                    c.set(Calendar.YEAR, year);
+                    c.set(Calendar.MONTH, (month + 1));
+                    c.set(Calendar.DAY_OF_MONTH, day);
+                    mMeetings = mMeetingApiService.getMeetingMatchDate(c);
+                    mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+
+                });
+                return true;
+
+
+            case R.id.Peach:
+                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Peach");
+                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                return true;
+
+            case R.id.Mario:
+                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Mario");
+                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                return true;
+
+            case R.id.Luigi:
+                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Luigi");
+                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
-    private void initData() {
+    void initData() {
         mMeetingApiService = DI.getMeetingApiService();
-        List<Meeting> meetings = mMeetingApiService.getMeetings();
-        this.mRecyclerView.setAdapter(new MyAdapter(meetings, this));
+        mMeetings = mMeetingApiService.getMeetings();
+        mMyAdapter = new MyAdapter(mMeetings, this);
+        mRecyclerView.setAdapter(mMyAdapter);
+        mPickers = new Pickers();
+        c = new GregorianCalendar();
     }
 
     @Override

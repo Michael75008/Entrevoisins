@@ -1,18 +1,13 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,21 +19,23 @@ import com.google.android.material.chip.ChipGroup;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.Utils.ItemClickSupport;
+import com.openclassrooms.mareuapp.Utils.MyValidator;
+import com.openclassrooms.mareuapp.Utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.model.ValidatorModel;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
-import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
-import com.openclassrooms.mareuapp.service.MyValidator;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +43,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -55,13 +55,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     MeetingApiService mApiService;
     Meeting mMeeting;
     Room mRoomValidator;
-    Date mDateValidator;
+    GregorianCalendar mDateValidator;
     List<Participant> mParticipantsValidator;
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
     List<Participant> mParticipantList;
-    DatePickerDialog mDatePicker;
-    TimePickerDialog mTimePicker;
+    Pickers mPickers;
 
     @BindView(R.id.room_list)
     AutoCompleteTextView mRoomNameAutoCompleteTextView;
@@ -100,38 +99,24 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @OnClick(R.id.date_image)
     public void onDateClick() {
-        final Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-        mDatePicker = new DatePickerDialog(AddMeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mdate.setText("Date de réunion choisie : " + dayOfMonth + "/" + (mDatePicker.getDatePicker().getMonth() + 1) + "/" + year);
-                mDateValidator.setDate(dayOfMonth);
-                mDateValidator.setMonth(monthOfYear);
-                mDateValidator.setYear(year);
-            }
-        }, year, month, day);
-        mDatePicker.show();
-        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+        mPickers.showCalendar(this, (datePicker, year, month, day) -> {
+            mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
+            mDateValidator.set(Calendar.YEAR, year);
+            mDateValidator.set(MONTH, (month + 1));
+            mDateValidator.set(DAY_OF_MONTH, day);
+        });
     }
 
     @OnClick(R.id.time_image)
     public void onTimeClick() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        mTimePicker = new TimePickerDialog(AddMeetingActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                mTime.setText("Heure de réunion choisie :" + selectedHour + ":" + selectedMinute);
-                mDateValidator.setHours(selectedHour);
-                mDateValidator.setMinutes(selectedMinute);
-            }
-        }, hour, minute, true);
-        mTimePicker.show();
+        mPickers.showTime(this, (timePicker, hours, minutes) -> {
+            mTime.setText("Heure de réunion choisie :" + hours + ":" + minutes);
+            mDateValidator.set(Calendar.HOUR_OF_DAY, hours);
+            mDateValidator.set(Calendar.MINUTE, minutes);
+
+        });
     }
+
 
     void initData() {
         mMeeting = new Meeting();
@@ -139,9 +124,12 @@ public class AddMeetingActivity extends AppCompatActivity {
         mParticipantApiService = DI.getParticipantsApiService();
         mApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator();
-        mDateValidator = new Date();
+        mDateValidator = new GregorianCalendar();
         mParticipantList = mParticipantApiService.getParticipants();
-        mParticipantsValidator = new ArrayList<Participant>();
+        mParticipantsValidator = new ArrayList<>();
+        mPickers = new Pickers();
+        mdate.setText(LocalDate.now().getDayOfMonth() + "/" + LocalDate.now().getMonthValue() + "/" + LocalDate.now().getYear());
+        mTime.setText(LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
     }
 
     private void setActionBar() {
@@ -161,11 +149,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRoomNameAutoCompleteTextView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-                String roomChoice = mRoomApiService.getRooms().get(position).getName();
                 mRoomValidator = mRoomApiService.getRooms().get(position);
-                mRoomName.setText(roomChoice);
-                mRoomNameAutoCompleteTextView.setText(null);
-                mRoomNameAutoCompleteTextView.setHint(null);
+                mRoomNameAutoCompleteTextView.setText(mRoomValidator.getName());
             }
         });
     }
@@ -174,7 +159,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList);
         mRecyclerView.setAdapter(recyclerAdapter);
-        mRecyclerView.setHasFixedSize(true);
         confirgureOnClickRecyclerView();
     }
 
@@ -189,11 +173,14 @@ public class AddMeetingActivity extends AppCompatActivity {
                 mParticipantsValidator
         );
         ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);
-        if (!validatorMessage.isValid()) {
+        if (validatorMessage.isValid()) {
             mApiService.createMeeting(mMeeting);
             finish();
             Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
-        } else { Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_LONG).show(); } }
+        } else {
+            Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void confirgureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.id.participant_recycler_view)

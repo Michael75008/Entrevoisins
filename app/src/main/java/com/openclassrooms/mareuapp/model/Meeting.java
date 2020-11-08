@@ -3,7 +3,7 @@ package com.openclassrooms.mareuapp.model;
 
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public class Meeting implements Serializable {
      * Meeting Date
      */
 
-    private Date mDate;
+    private GregorianCalendar mDate;
 
     /**
      * List of Participants
@@ -46,13 +46,14 @@ public class Meeting implements Serializable {
      * Constructor
      */
 
-    public Meeting(int id, String name, Room room, Date date, List<Participant> participants) {
+    public Meeting(int id, String name, Room room, GregorianCalendar date, List<Participant> participants) {
         this.id = id;
         this.name = name;
         this.mDate = date;
-        this.mRoom= room;
+        this.mRoom = room;
         mParticipants = participants;
     }
+
 
     public Meeting() {
     }
@@ -66,9 +67,11 @@ public class Meeting implements Serializable {
         this.name = name;
     }
 
-    public Date getDate() { return mDate; }
+    public GregorianCalendar getDate() {
+        return mDate;
+    }
 
-    public void setDate(Date date) {
+    public void setDate(GregorianCalendar date) {
         mDate = date;
     }
 
@@ -87,7 +90,6 @@ public class Meeting implements Serializable {
     public void setRoom(Room room) {
         mRoom = room;
     }
-
 
 
 }

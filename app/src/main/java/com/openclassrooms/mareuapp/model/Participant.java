@@ -13,31 +13,13 @@ public class Participant implements Serializable {
 
     private String Mail;
 
-    private Chip mChip;
-
-    public Participant(int id, String email){
+    public Participant(int id, String email) {
         this.Id = id;
         this.Mail = email;
     }
 
-    public Participant(Chip childAt) {
-        this.mChip = childAt;
-    }
-
-    public Participant(String participant) {
-        this.Mail = participant;
-    }
-
-    public Participant() {
-
-    }
-
     public String getMail() {
         return Mail;
-    }
-
-    public void setMail(String email) {
-        Mail = email;
     }
 
     public int getId() {

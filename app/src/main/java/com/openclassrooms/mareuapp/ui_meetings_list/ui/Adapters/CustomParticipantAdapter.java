@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Participant;
-import com.openclassrooms.mareuapp.service.ApiServices.RecyclerItemSelectedListener;
-import com.openclassrooms.mareuapp.ui_meetings_list.ui.AddMeetingActivity;
 
 import java.util.List;
 
@@ -48,17 +46,15 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
         return mParticipantsList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder  {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView ParticipantsName;
         LinearLayout RootView;
-        RecyclerView mRecyclerView;
 
         public MyViewHolder(View view) {
             super(view);
             ParticipantsName = view.findViewById(R.id.participant_mail);
             RootView = view.findViewById(R.id.participant_list_linear_layout);
-
         }
     }
 

@@ -8,10 +8,8 @@ import java.util.List;
 public interface ParticipantApiService {
 
     /**
-     * Get List of Participants called by their mail
+     * Get List of Participants
      */
-
-    List<String> getParticipantsByMail();
 
     List<Participant> getParticipants();
 

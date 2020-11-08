@@ -1,8 +1,6 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
+import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,19 +30,24 @@ import butterknife.ButterKnife;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private final List<Meeting> mMeetings;
+    private List<Meeting> mMeetings;
     Context mContext;
+    MeetingApiService mMeetingApiService;
 
     public MyAdapter(List<Meeting> items, Context context) {
         this.mMeetings = items;
         this.mContext = context;
-
+        mMeetingApiService = DI.getMeetingApiService();
     }
 
+    public void updateMeeting(List<Meeting> newMeetings) {
+        mMeetings.clear();
+        mMeetings.addAll(newMeetings);
+        notifyDataSetChanged();
+    }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int ViewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
         View view = LayoutInflater.from((parent.getContext()))
                 .inflate(R.layout.fragment_main_item, parent, false);
         return new ViewHolder(view);
@@ -58,13 +65,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mMeetings.remove(viewHolder.getAdapterPosition());
-                notifyItemRemoved(viewHolder.getAdapterPosition());
+                mMeetingApiService.deleteMeeting(meeting);
+                notifyDataSetChanged();
                 Toast.makeText(mContext, "La réunion a été supprimée", Toast.LENGTH_LONG).show();
             }
         });
     }
-        @Override
+
+    @Override
     public int getItemCount() {
         return mMeetings.size();
     }
@@ -96,16 +104,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     }
                 }
             }
+
             this.mMeetingMails.setText(titleResult.toString());
-
-
             StringBuilder subTitleResult = new StringBuilder();
             subTitleResult.append(meeting.getName());
+
             subTitleResult.append(" - ");
+
             DateFormat dateFormat1 = new SimpleDateFormat("HH:mm");
-            String hour = dateFormat1.format(meeting.getDate());
+            String hour = dateFormat1.format(meeting.getDate().getTime());
             subTitleResult.append(hour);
+
             subTitleResult.append(" - ");
+
             Room room = meeting.getRoom();
             subTitleResult.append(room.getName());
             this.mMeetingName.setText(subTitleResult.toString());

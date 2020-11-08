@@ -3,64 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.openclassrooms.mareuapp.ui_meetings_list.ui.MeetingActivity">
     <item
+        android:id="@+id/getallmeetings"
+        android:title="Toutes mes réunions"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/filterbyplace"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="Filtrer par Lieu"
         app:showAsAction="never">
         <menu>
             <item
-                android:id="@+id/salleA"
-                android:checkable="true"
-                android:title="Salle A"
+                android:id="@+id/Peach"
+                android:title="Salle Peach"
                 />
 
             <item
-                android:id="@+id/SalleB"
-                android:checkable="true"
-                android:title="Salle B" />
+                android:id="@+id/Mario"
+                android:title="Salle Mario" />
 
             <item
-                android:id="@+id/SalleC"
-                android:checkable="true"
-                android:title="Salle C" />
-
-            <item
-                android:id="@+id/SalleD"
-                android:checkable="true"
-                android:title="Salle D"
-                />
-
-            <item
-                android:id="@+id/SalleE"
-                android:checkable="true"
-                android:title="Salle E" />
-
-            <item
-                android:id="@+id/SalleF"
-                android:checkable="true"
-                android:title="Salle F" />
-
-            <item
-                android:id="@+id/SalleG"
-                android:checkable="true"
-                android:title="Salle G"
-                />
-
-            <item
-                android:id="@+id/SalleH"
-                android:checkable="true"
-                android:title="Salle H" />
-
-            <item
-                android:id="@+id/SalleI"
-                android:checkable="true"
-                android:title="Salle I" />
-            <item
-                android:id="@+id/SalleJ"
-                android:checkable="true"
-                android:title="Salle J"
-                />
-
+                android:id="@+id/Luigi"
+                android:title="Salle Luigi" />
         </menu>
     </item>
     <item

@@ -4,6 +4,9 @@ import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.Generators.MeetingApiServiceGenerator;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -39,44 +42,39 @@ public class DummyMeetingApiService implements MeetingApiService {
     public void createMeeting(Meeting meeting) {
         meetings.add(meeting);
     }
+
+    /**
+     * Get Meeting's list filtered by Room
+     *
+     * @param roomName
+     * @return
+     */
+
+    public List<Meeting> getMeetingsMatchRoomName(String roomName) {
+        List<Meeting> currentMeetings = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
+            Meeting meeting = meetings.get(i);
+            if (meeting.getRoom().getName().equals(roomName.trim()))
+                currentMeetings.add(meeting);
+        }
+        return currentMeetings;
+    }
+
+    /**
+     * Get Meeting's list filtered by date
+     *
+     * @param date
+     * @return
+     */
+
+
+    public List<Meeting> getMeetingMatchDate(GregorianCalendar date) {
+        List<Meeting> currentMeetings = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
+            Meeting meeting = meetings.get(i);
+            if (meeting.getDate().get(Calendar.MONTH) == date.get(Calendar.MONTH) && meeting.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && meeting.getDate().get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH))
+                currentMeetings.add(meeting);
+        }
+        return currentMeetings;
+    }
 }
-
-
-/**
-public static List<Meeting> getMeetingsMatchDate(Calendar date, List<Meeting> meetings) {
-    List<Meeting> tmp = new ArrayList<>();
-
-    for (Meeting m : meetings)
-        if (sameDate(m.getDate(), date))
-            tmp.add(m);
-
-    return tmp;
-}
-
-
- * Return ordered meetings list filter by room name
- * @param roomName selected room name
- * @param meetings meetings list to filter
- * @return filtered meetings list
-
-public static List<Meeting> getMeetingsMatchRoomName(String roomName, List<Meeting> meetings) {
-List<Meeting> tmp = new ArrayList<>();
-
-for (Meeting m: meetings)
-if (m.getName().trim().equals(roomName.trim()))
-tmp.add(m);
-
-return tmp;
-}
-
-
-public List<Meeting> updatelist(Calendar date, String roomName) {
-if(date != null && roomName != null)
-return getMeetingsMatchDate(date, getMeetingsMatchRoomName(roomName, meetings));
-else if(date != null)
-return getMeetingsMatchDate(date, meetings);
-else if(roomName != null && ! roomName.isEmpty())
-return getMeetingsMatchRoomName(roomName, meetings);
-return meetings;
-}
- */

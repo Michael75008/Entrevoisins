@@ -1,10 +1,9 @@
 package com.openclassrooms.mareuapp.service.Dummys;
 
 import com.openclassrooms.mareuapp.model.Room;
-import com.openclassrooms.mareuapp.service.Generators.RoomApiServiceGenerator;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
+import com.openclassrooms.mareuapp.service.Generators.RoomApiServiceGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DummyRoomApiService implements RoomApiService {
@@ -19,14 +18,4 @@ public class DummyRoomApiService implements RoomApiService {
         return mRooms;
     }
 
-    public List<String> getRoomsByName() {
-        List<String> currentRooms = new ArrayList<>();
-        for (int i = 0; i < mRooms.size(); i++) {
-            String room = mRooms.get(i).getName();
-            if (room != null) {
-                currentRooms.add(room);
-            }
-        }
-        return currentRooms;
-    }
 }
