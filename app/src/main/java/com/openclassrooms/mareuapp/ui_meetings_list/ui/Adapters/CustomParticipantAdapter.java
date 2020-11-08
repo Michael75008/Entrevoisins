@@ -1,9 +1,11 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters;
 
 import android.content.Context;
+import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,18 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Participant;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.AddMeetingActivity;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomParticipantAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Participant> mParticipantsList;
+    private List<Participant> mNewParticipants;
 
 
-    public CustomParticipantAdapter(Context context, List<Participant> participantList) {
+    public CustomParticipantAdapter(Context context, List<Participant> participantList, List<Participant> newParticipants) {
         this.mContext = context;
         this.mParticipantsList = participantList;
+        this.mNewParticipants = newParticipants;
     }
 
     @NonNull
@@ -31,14 +39,20 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.participants_item, parent, false);
-
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String mName = mParticipantsList.get(position).getMail();
-        holder.ParticipantsName.setText(mName);
+        Participant participant = mParticipantsList.get(position);
+        holder.ParticipantsName.setText(participant.getMail());
+
+        holder.ParticipantsName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNewParticipants.add(participant);
+            }
+        });
     }
 
     @Override
@@ -48,17 +62,14 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView ParticipantsName;
+        @BindView(R.id.email)
+        CheckBox ParticipantsName;
+        @BindView(R.id.view)
         LinearLayout RootView;
 
         public MyViewHolder(View view) {
             super(view);
-            ParticipantsName = view.findViewById(R.id.participant_mail);
-            RootView = view.findViewById(R.id.participant_list_linear_layout);
+            ButterKnife.bind(this, view);
         }
-    }
-
-    public Participant getUser(int position) {
-        return mParticipantsList.get(position);
     }
 }

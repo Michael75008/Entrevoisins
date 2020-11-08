@@ -14,11 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.openclassrooms.mareuapp.DI.DI;
 import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.Utils.ItemClickSupport;
 import com.openclassrooms.mareuapp.Utils.MyValidator;
 import com.openclassrooms.mareuapp.Utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
@@ -44,15 +41,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.MONTH;
-
 
 public class AddMeetingActivity extends AppCompatActivity {
 
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
-    MeetingApiService mApiService;
+    MeetingApiService mMeetingApiService;
     Meeting mMeeting;
     Room mRoomValidator;
     GregorianCalendar mDateValidator;
@@ -61,6 +55,9 @@ public class AddMeetingActivity extends AppCompatActivity {
     CustomParticipantAdapter recyclerAdapter;
     List<Participant> mParticipantList;
     Pickers mPickers;
+    int uniqueId = 3;
+
+
 
     @BindView(R.id.room_list)
     AutoCompleteTextView mRoomNameAutoCompleteTextView;
@@ -74,8 +71,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     TextView mRoomName;
     @BindView(R.id.participant_recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.participants_list)
-    ChipGroup mChipGroup;
+
 
     protected void onCreate(Bundle savedInstanceStace) {
         super.onCreate(savedInstanceStace);
@@ -83,15 +79,19 @@ public class AddMeetingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
         setActionBar();
-        setRoomsAdapter();
         setParticipantsAdapters();
-        this.confirgureOnClickRecyclerView();
+    }
+
+    public int getUniqueId()
+    {
+        return uniqueId++;
     }
 
     @OnTouch(R.id.room_list)
-    boolean onTouch(View v, MotionEvent event) {
+    boolean onTouch(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mRoomNameAutoCompleteTextView.showDropDown();
+            setRoomsAdapter();
             return true;
         }
         return (event.getAction() == MotionEvent.ACTION_UP);
@@ -101,9 +101,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
             mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
-            mDateValidator.set(Calendar.YEAR, year);
-            mDateValidator.set(MONTH, (month + 1));
-            mDateValidator.set(DAY_OF_MONTH, day);
+            mDateValidator.set(year, (month+1), day);
         });
     }
 
@@ -113,16 +111,14 @@ public class AddMeetingActivity extends AppCompatActivity {
             mTime.setText("Heure de réunion choisie :" + hours + ":" + minutes);
             mDateValidator.set(Calendar.HOUR_OF_DAY, hours);
             mDateValidator.set(Calendar.MINUTE, minutes);
-
         });
     }
-
 
     void initData() {
         mMeeting = new Meeting();
         mRoomApiService = DI.getRoomApiService();
         mParticipantApiService = DI.getParticipantsApiService();
-        mApiService = DI.getMeetingApiService();
+        mMeetingApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator();
         mDateValidator = new GregorianCalendar();
         mParticipantList = mParticipantApiService.getParticipants();
@@ -139,7 +135,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        Toast.makeText(getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -157,16 +153,14 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private void setParticipantsAdapters() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList);
+        recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList, mParticipantsValidator);
         mRecyclerView.setAdapter(recyclerAdapter);
-        confirgureOnClickRecyclerView();
     }
-
 
     @OnClick(R.id.validate_meeting)
     public void meetingValidator() {
         mMeeting = new Meeting(
-                666,
+                getUniqueId(),
                 mName.getText().toString(),
                 mRoomValidator,
                 mDateValidator,
@@ -174,42 +168,12 @@ public class AddMeetingActivity extends AppCompatActivity {
         );
         ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);
         if (validatorMessage.isValid()) {
-            mApiService.createMeeting(mMeeting);
+            mMeetingApiService.createMeeting(mMeeting);
             finish();
             Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void confirgureOnClickRecyclerView() {
-        ItemClickSupport.addTo(mRecyclerView, R.id.participant_recycler_view)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        Participant participant = recyclerAdapter.getUser(position);
-                        mParticipantList.remove(participant);
-                        recyclerAdapter.notifyDataSetChanged();
-                        Chip chip = new Chip(mChipGroup.getContext());
-                        chip.setText(participant.getMail().toString());
-                        chip.setCloseIconVisible(true);
-                        chip.setCheckable(false);
-                        chip.setClickable(false);
-                        mChipGroup.addView(chip);
-                        mChipGroup.setVisibility(View.VISIBLE);
-                        mParticipantsValidator.add(participant);
-
-                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                mChipGroup.removeView(view);
-                                mParticipantList.add(participant);
-                                recyclerAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                    }
-                });
     }
 }
 
