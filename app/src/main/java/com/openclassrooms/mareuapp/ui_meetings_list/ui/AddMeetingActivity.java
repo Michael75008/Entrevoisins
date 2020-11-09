@@ -25,6 +25,9 @@ import com.openclassrooms.mareuapp.model.ValidatorModel;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyParticipantApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyRoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
@@ -54,9 +57,9 @@ public class AddMeetingActivity extends AppCompatActivity {
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
     List<Participant> mParticipantList;
+    List<Meeting> mMeetingList;
     Pickers mPickers;
-    int uniqueId = 3;
-
+    int uniqueId;
 
 
     @BindView(R.id.room_list)
@@ -89,9 +92,9 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @OnTouch(R.id.room_list)
     boolean onTouch(MotionEvent event) {
+        setRoomsAdapter();
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mRoomNameAutoCompleteTextView.showDropDown();
-            setRoomsAdapter();
             return true;
         }
         return (event.getAction() == MotionEvent.ACTION_UP);
@@ -117,13 +120,15 @@ public class AddMeetingActivity extends AppCompatActivity {
     void initData() {
         mMeeting = new Meeting();
         mRoomApiService = DI.getRoomApiService();
-        mParticipantApiService = DI.getParticipantsApiService();
+        mParticipantApiService = DI.getParticipantService();
         mMeetingApiService = DI.getMeetingApiService();
         mMyValidator = new MyValidator();
         mDateValidator = new GregorianCalendar();
         mParticipantList = mParticipantApiService.getParticipants();
+        mMeetingList = mMeetingApiService.getMeetings();
         mParticipantsValidator = new ArrayList<>();
         mPickers = new Pickers();
+        uniqueId = mMeetingList.size();
         mdate.setText(LocalDate.now().getDayOfMonth() + "/" + LocalDate.now().getMonthValue() + "/" + LocalDate.now().getYear());
         mTime.setText(LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
     }
@@ -140,7 +145,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     private void setRoomsAdapter() {
-        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(this, mRoomApiService.getRooms());
+        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(AddMeetingActivity.this, mRoomApiService.getRooms());
         mRoomNameAutoCompleteTextView.setAdapter(customRoomAdapter);
         mRoomNameAutoCompleteTextView.setOnItemClickListener(new OnItemClickListener() {
             @Override

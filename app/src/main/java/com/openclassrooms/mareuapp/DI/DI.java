@@ -7,29 +7,36 @@ import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
 import com.openclassrooms.mareuapp.service.Dummys.DummyParticipantApiService;
 import com.openclassrooms.mareuapp.service.Dummys.DummyRoomApiService;
 
-
+/**
+ * Dependency injector to get instance of services
+ */
 public class DI {
 
-    private static MeetingApiService service = new DummyMeetingApiService();
-
+    private static MeetingApiService meetingService = new DummyMeetingApiService();
+    private static RoomApiService roomService = new DummyRoomApiService();
+    private static ParticipantApiService participantService = new DummyParticipantApiService();
 
     /**
-     * Get an instance on MeetingApi
+     * Get an instance on MeetingApiService
      */
 
     public static MeetingApiService getMeetingApiService() {
-        return service;
+        return meetingService;
     }
 
     /**
-     * Get always a new instance on MeetingApi
+     * Get an instance on RoomApiService
      */
 
     public static RoomApiService getRoomApiService() {
-        return new DummyRoomApiService();
+        return roomService;
     }
 
-    public static ParticipantApiService getParticipantsApiService() {
-        return new DummyParticipantApiService();
+    /**
+     * Get an instance on ParticipantApiService
+     */
+
+    public static ParticipantApiService getParticipantService() {
+        return participantService;
     }
 }

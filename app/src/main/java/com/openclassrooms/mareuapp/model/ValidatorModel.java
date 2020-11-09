@@ -1,29 +1,43 @@
 package com.openclassrooms.mareuapp.model;
 
+/**
+ * Model object representing a validator
+ */
+
 public class ValidatorModel {
+
+    /**
+     * Validation estate
+     */
 
     private boolean isValid;
 
+    /**
+     * Message
+     */
+
     private String errorMessage;
+
+    /**
+     * Constructor
+     * @param isValid
+     * @param errorMessage
+     */
 
     public ValidatorModel(boolean isValid, String errorMessage) {
         this.isValid = isValid;
-        this.errorMessage = errorMessage;
-    }
+        this.errorMessage = errorMessage; }
 
-    public boolean isValid() {
-        return isValid;
-    }
+    /**
+     * Getters and setters
+     * @return
+     */
 
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
+    public boolean isValid() { return isValid; }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+    public void setValid(boolean valid) { isValid = valid; }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+    public String getErrorMessage() { return errorMessage; }
+
+    public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
 }

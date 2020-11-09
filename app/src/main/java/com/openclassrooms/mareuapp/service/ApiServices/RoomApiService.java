@@ -7,7 +7,7 @@ import java.util.List;
 public interface RoomApiService {
 
     /**
-     * Get all my Rooms
+     * Get all Rooms
      */
 
     List<Room> getRooms();

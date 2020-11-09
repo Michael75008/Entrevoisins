@@ -14,7 +14,6 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     private List<Meeting> meetings = MeetingApiServiceGenerator.generateMeetings();
 
-
     /**
      * Get Meeting's List
      */
@@ -25,8 +24,6 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     /**
      * Deletes a Meeting from List
-     *
-     * @param meeting
      */
 
     public void deleteMeeting(Meeting meeting) {
@@ -35,8 +32,6 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     /**
      * Creates a Meeting and add it to List
-     *
-     * @param meeting
      */
 
     public void createMeeting(Meeting meeting) {
@@ -45,9 +40,6 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     /**
      * Get Meeting's list filtered by Room
-     *
-     * @param roomName
-     * @return
      */
 
     public List<Meeting> getMeetingsMatchRoomName(String roomName) {
@@ -62,11 +54,7 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     /**
      * Get Meeting's list filtered by date
-     *
-     * @param date
-     * @return
      */
-
 
     public List<Meeting> getMeetingMatchDate(GregorianCalendar date) {
         List<Meeting> currentMeetings = new ArrayList<>();

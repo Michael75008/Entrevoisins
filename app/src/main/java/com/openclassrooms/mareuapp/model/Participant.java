@@ -9,24 +9,36 @@ import java.io.Serializable;
  */
 public class Participant implements Serializable {
 
+    /**
+     * Identifier
+     */
+
     private int Id;
+
+    /**
+     * Email
+     */
 
     private String Mail;
 
+    /**
+     * Constructor
+     * @param id
+     * @param email
+     */
+
     public Participant(int id, String email) {
         this.Id = id;
-        this.Mail = email;
-    }
+        this.Mail = email; }
 
-    public String getMail() {
-        return Mail;
-    }
+    /**
+     * Getters and setters
+     * @return
+     */
 
-    public int getId() {
-        return Id;
-    }
+    public String getMail() { return Mail; }
 
-    public void setId(int id) {
-        Id = id;
-    }
+    public int getId() { return Id; }
+
+    public void setId(int id) { Id = id; }
 }

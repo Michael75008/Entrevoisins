@@ -13,18 +13,23 @@ import com.openclassrooms.mareuapp.model.Room;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CustomRoomAdapter extends ArrayAdapter<Room> {
 
     private final List<Room> mRoomList;
-
     private LayoutInflater mLayoutInflater;
 
+    @BindView(R.id.room_name)
+    TextView mRoomName;
+    @BindView(R.id.room_color)
+    ImageView mRoomColor;
 
     public CustomRoomAdapter(Context context, List<Room> rooms) {
         super(context, 0, rooms);
         this.mRoomList = rooms;
-        this.mLayoutInflater = (LayoutInflater.from(context));
-    }
+        this.mLayoutInflater = (LayoutInflater.from(context)); }
 
     @Override
     public int getCount() {
@@ -43,16 +48,11 @@ public class CustomRoomAdapter extends ArrayAdapter<Room> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = this.mLayoutInflater.inflate(R.layout.room_item, parent, false);
-            TextView mRoomName = convertView.findViewById(R.id.room_name);
-            ImageView mRoomColor = convertView.findViewById(R.id.room_color);
-            Room room = mRoomList.get(position);
-            if (room != null) {
-                mRoomName.setText(room.getName());
-                mRoomColor.setImageResource(room.getImage());
-            }
-        }
+        convertView = mLayoutInflater.inflate(R.layout.room_item, parent, false);
+        ButterKnife.bind(this, convertView);
+        Room room = mRoomList.get(position);
+        mRoomName.setText(room.getName());
+        mRoomColor.setImageResource(room.getImage());
         return convertView;
     }
 }

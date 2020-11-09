@@ -37,7 +37,6 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.participants_item, parent, false);
         return new MyViewHolder(view);
     }
@@ -46,7 +45,6 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Participant participant = mParticipantsList.get(position);
         holder.ParticipantsName.setText(participant.getMail());
-
         holder.ParticipantsName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

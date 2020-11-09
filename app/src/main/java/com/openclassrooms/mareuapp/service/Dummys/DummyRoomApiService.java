@@ -17,5 +17,4 @@ public class DummyRoomApiService implements RoomApiService {
     public List<Room> getRooms() {
         return mRooms;
     }
-
 }

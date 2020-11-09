@@ -43,7 +43,7 @@ public class Meeting implements Serializable {
     private List<Participant> mParticipants;
 
     /**
-     * Constructor
+     * Constructors
      */
 
     public Meeting(int id, String name, Room room, GregorianCalendar date, List<Participant> participants) {
@@ -54,42 +54,20 @@ public class Meeting implements Serializable {
         mParticipants = participants;
     }
 
+    public Meeting() { }
 
-    public Meeting() {
-    }
+    /**
+     * Getters and setters
+     * @return
+     */
 
+    public String getName() { return name; }
 
-    public String getName() {
-        return name;
-    }
+    public GregorianCalendar getDate() { return mDate; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public List<Participant> getParticipants() { return mParticipants; }
 
-    public GregorianCalendar getDate() {
-        return mDate;
-    }
+    public Room getRoom() { return mRoom; }
 
-    public void setDate(GregorianCalendar date) {
-        mDate = date;
-    }
-
-    public List<Participant> getParticipants() {
-        return mParticipants;
-    }
-
-    public void setParticipants(List<Participant> participants) {
-        mParticipants = participants;
-    }
-
-    public Room getRoom() {
-        return mRoom;
-    }
-
-    public void setRoom(Room room) {
-        mRoom = room;
-    }
-
-
+    public void setRoom(Room room) { mRoom = room; }
 }

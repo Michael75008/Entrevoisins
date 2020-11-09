@@ -8,7 +8,7 @@ import java.util.List;
 public interface ParticipantApiService {
 
     /**
-     * Get List of Participants
+     * Get all participants
      */
 
     List<Participant> getParticipants();

@@ -75,15 +75,11 @@ public class MeetingActivity extends AppCompatActivity {
 
             case R.id.filterbydate:
                 mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-                    c.set(Calendar.YEAR, year);
-                    c.set(Calendar.MONTH, (month + 1));
-                    c.set(Calendar.DAY_OF_MONTH, day);
+                    c.set(year, (month=+1), day);
                     mMeetings = mMeetingApiService.getMeetingMatchDate(c);
                     mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
-
                 });
                 return true;
-
 
             case R.id.Peach:
                 mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Peach");

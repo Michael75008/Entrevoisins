@@ -19,6 +19,7 @@ import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -100,8 +101,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Participant participant = meeting.getParticipants().get(i);
                     titleResult.append(participant.getMail());
                     if (i < participants.size() - 1) {
-                        titleResult.append(", ");
-                    }
+                        titleResult.append(", "); }
                 }
             }
 

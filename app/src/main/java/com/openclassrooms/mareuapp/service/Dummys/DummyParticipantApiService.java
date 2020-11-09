@@ -14,8 +14,5 @@ public class DummyParticipantApiService implements ParticipantApiService {
      * Get Participant's List
      */
 
-    public List<Participant> getParticipants() {
-        return mParticipants;
-    }
-
+    public List<Participant> getParticipants() { return mParticipants; }
 }
