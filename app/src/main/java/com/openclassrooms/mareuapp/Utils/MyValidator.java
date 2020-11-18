@@ -7,45 +7,32 @@ import com.openclassrooms.mareuapp.model.ValidatorModel;
 public class MyValidator {
 
     ValidatorModel validatorModel;
+    private final static String ERROR_NAME = "Renseignez un nom de réunion avant de valider";
+    private final static String ERROR_ROOM = "Renseignez une salle de réunion avant de valider";
+    private final static String ERROR_PARTICIPANT = "Selectionnez au moins un participant avant de valider";
+
 
     public MyValidator() {
         this.validatorModel = new ValidatorModel(true, "");
+
     }
 
     public ValidatorModel checkMeeting(Meeting meeting) {
-        checkRoom(meeting);
-        checkName(meeting);
-        checkParticipants(meeting);
-        checkMeet(meeting);
+        if(meeting == null){
+            validatorModel.setValid(false);
+            return validatorModel;
+        }
+        validatorModel.setValid(true);
+        check(meeting.getName().isEmpty(), ERROR_NAME);
+        check(meeting.getRoom() == null, ERROR_ROOM);
+        check(meeting.getParticipants().size() == 0, ERROR_PARTICIPANT);
         return validatorModel;
     }
 
-    public void checkName(Meeting meeting) {
-        if (meeting.getName().isEmpty()) {
+    private void check(boolean condition, String msg) {
+        if (condition) {
             validatorModel.setValid(false);
-            validatorModel.setErrorMessage("Renseignez un nom de réunion avant de valider");
-        }
-    }
-
-    public void checkRoom(Meeting meeting) {
-        if (meeting.getRoom() == null) {
-            validatorModel.setValid(false);
-            validatorModel.setErrorMessage("Renseignez une salle de réunion avant de valider");
-        }
-    }
-
-    public void checkParticipants(Meeting meeting) {
-        if (meeting.getParticipants().size() == 0) {
-            validatorModel.setValid(false);
-            validatorModel.setErrorMessage("Selectionnez au moins un participant avant de valider");
-        }
-    }
-
-    public void checkMeet(Meeting meeting) {
-        if (!meeting.getName().isEmpty() && meeting.getRoom() != null && meeting.getParticipants().size() != 0) {
-            validatorModel.setValid(true);
-            validatorModel.setErrorMessage("");
-
+            validatorModel.setErrorMessage(msg);
         }
     }
 }

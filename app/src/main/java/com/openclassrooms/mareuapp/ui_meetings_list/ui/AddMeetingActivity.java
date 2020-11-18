@@ -25,9 +25,6 @@ import com.openclassrooms.mareuapp.model.ValidatorModel;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
-import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
-import com.openclassrooms.mareuapp.service.Dummys.DummyParticipantApiService;
-import com.openclassrooms.mareuapp.service.Dummys.DummyRoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
@@ -35,7 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,9 +47,9 @@ public class AddMeetingActivity extends AppCompatActivity {
     RoomApiService mRoomApiService;
     ParticipantApiService mParticipantApiService;
     MeetingApiService mMeetingApiService;
-    Meeting mMeeting;
     Room mRoomValidator;
-    GregorianCalendar mDateValidator;
+    Calendar mDateValidator;
+    Date mDateMeeting;
     List<Participant> mParticipantsValidator;
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
@@ -85,16 +82,15 @@ public class AddMeetingActivity extends AppCompatActivity {
         setParticipantsAdapters();
     }
 
-    public int getUniqueId()
-    {
+    public int getUniqueId() {
         return uniqueId++;
     }
 
     @OnTouch(R.id.room_list)
     boolean onTouch(MotionEvent event) {
-        setRoomsAdapter();
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mRoomNameAutoCompleteTextView.showDropDown();
+            setRoomsAdapter();
             return true;
         }
         return (event.getAction() == MotionEvent.ACTION_UP);
@@ -104,7 +100,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
             mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
-            mDateValidator.set(year, (month+1), day);
+            mDateValidator.set(year, month, day);
         });
     }
 
@@ -118,12 +114,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     void initData() {
-        mMeeting = new Meeting();
+        mMyValidator = new MyValidator();
         mRoomApiService = DI.getRoomApiService();
         mParticipantApiService = DI.getParticipantService();
         mMeetingApiService = DI.getMeetingApiService();
-        mMyValidator = new MyValidator();
-        mDateValidator = new GregorianCalendar();
+        mDateValidator = Calendar.getInstance();
+        mDateMeeting = mDateValidator.getTime();
         mParticipantList = mParticipantApiService.getParticipants();
         mMeetingList = mMeetingApiService.getMeetings();
         mParticipantsValidator = new ArrayList<>();
@@ -164,11 +160,11 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @OnClick(R.id.validate_meeting)
     public void meetingValidator() {
-        mMeeting = new Meeting(
+        Meeting mMeeting = new Meeting(
                 getUniqueId(),
                 mName.getText().toString(),
                 mRoomValidator,
-                mDateValidator,
+                mDateMeeting,
                 mParticipantsValidator
         );
         ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);

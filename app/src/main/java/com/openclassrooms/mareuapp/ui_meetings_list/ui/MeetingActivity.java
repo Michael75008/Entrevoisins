@@ -12,14 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareuapp.DI.DI;
+import com.openclassrooms.mareuapp.Events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.Utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
+import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,11 +44,12 @@ public class MeetingActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
 
     MeetingApiService mMeetingApiService;
-    MyAdapter mMyAdapter;
     List<Meeting> mMeetings;
+    RoomApiService mRoomApiService;
+    MyAdapter mMyAdapter;
     Pickers mPickers;
-    GregorianCalendar c;
-
+    Calendar mCalendar;
+    Date mDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,25 +81,22 @@ public class MeetingActivity extends AppCompatActivity {
 
             case R.id.filterbydate:
                 mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-                    c.set(year, (month=+1), day);
-                    mMeetings = mMeetingApiService.getMeetingMatchDate(c);
-                    mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                    mCalendar.set(year, month, day);
+                    mDate = mCalendar.getTime();
+                    mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchDate(mDate));
                 });
                 return true;
 
             case R.id.Peach:
-                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Peach");
-                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(0)));
                 return true;
 
             case R.id.Mario:
-                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Mario");
-                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
                 return true;
 
             case R.id.Luigi:
-                mMeetings = mMeetingApiService.getMeetingsMatchRoomName("Luigi");
-                mRecyclerView.setAdapter(new MyAdapter(mMeetings, this));
+                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(2)));
                 return true;
 
             default:
@@ -103,12 +106,15 @@ public class MeetingActivity extends AppCompatActivity {
 
     void initData() {
         mMeetingApiService = DI.getMeetingApiService();
+        mRoomApiService = DI.getRoomApiService();
         mMeetings = mMeetingApiService.getMeetings();
-        mMyAdapter = new MyAdapter(mMeetings, this);
+        mMyAdapter = new MyAdapter(this, mMeetings);
         mRecyclerView.setAdapter(mMyAdapter);
         mPickers = new Pickers();
-        c = new GregorianCalendar();
+        mCalendar = Calendar.getInstance();
+        mDate = new Date();
     }
+
 
     @Override
     public void onResume() {
@@ -116,8 +122,28 @@ public class MeetingActivity extends AppCompatActivity {
         initData();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        initData();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        initData();
+    }
+
     private void setActionBar() {
         setSupportActionBar(mToolbar);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_navigation_icon));
+    }
+
+    @Subscribe
+    public void onDeleteMeeting(DeleteMeetingEvent event) {
+        mMeetingApiService.deleteMeeting(event.meeting);
+        initData();
     }
 }

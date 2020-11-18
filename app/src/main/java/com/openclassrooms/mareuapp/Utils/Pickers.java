@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Pickers {
 
@@ -12,16 +13,16 @@ public class Pickers {
     }
 
     public void showCalendar(Context context, DatePickerDialog.OnDateSetListener listener) {
-        Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
+        Calendar mcurrentDate = (Calendar) Calendar.getInstance();
+        int day = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+        int month = mcurrentDate.get(Calendar.MONTH);
+        int year = mcurrentDate.get(Calendar.YEAR);
 
         new DatePickerDialog(context, listener, year, month, day).show();
     }
 
     public void showTime(Context context, TimePickerDialog.OnTimeSetListener listener) {
-        Calendar mcurrentTime = Calendar.getInstance();
+        Calendar mcurrentTime = (Calendar) Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
 

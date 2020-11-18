@@ -1,9 +1,8 @@
-
 package com.openclassrooms.mareuapp.model;
 
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class Meeting implements Serializable {
      * Meeting Date
      */
 
-    private GregorianCalendar mDate;
+    private Date mDate;
 
     /**
      * List of Participants
@@ -46,7 +45,7 @@ public class Meeting implements Serializable {
      * Constructors
      */
 
-    public Meeting(int id, String name, Room room, GregorianCalendar date, List<Participant> participants) {
+    public Meeting(int id, String name, Room room, Date date, List<Participant> participants) {
         this.id = id;
         this.name = name;
         this.mDate = date;
@@ -54,20 +53,52 @@ public class Meeting implements Serializable {
         mParticipants = participants;
     }
 
-    public Meeting() { }
 
     /**
      * Getters and setters
+     *
      * @return
      */
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public GregorianCalendar getDate() { return mDate; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public List<Participant> getParticipants() { return mParticipants; }
+    public Date getDate() {
+        return mDate;
+    }
 
-    public Room getRoom() { return mRoom; }
+    public void setDate(Date date) {
+        mDate = date;
+    }
 
-    public void setRoom(Room room) { mRoom = room; }
+    public List<Participant> getParticipants() {
+        return mParticipants;
+    }
+
+    public void setParticipants(List<Participant> participants) {
+        mParticipants = participants;
+    }
+
+    public Room getRoom() {
+        return mRoom;
+    }
+
+    public void setRoom(Room room) {
+        mRoom = room;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }

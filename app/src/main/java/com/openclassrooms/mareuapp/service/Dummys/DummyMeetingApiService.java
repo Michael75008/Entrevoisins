@@ -1,18 +1,20 @@
 package com.openclassrooms.mareuapp.service.Dummys;
 
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.Generators.MeetingApiServiceGenerator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    private List<Meeting> meetings = MeetingApiServiceGenerator.generateMeetings();
+    private final List<Meeting> meetings = MeetingApiServiceGenerator.generateMeetings();
 
     /**
      * Get Meeting's List
@@ -38,29 +40,31 @@ public class DummyMeetingApiService implements MeetingApiService {
         meetings.add(meeting);
     }
 
+
     /**
      * Get Meeting's list filtered by Room
      */
-
-    public List<Meeting> getMeetingsMatchRoomName(String roomName) {
-        List<Meeting> currentMeetings = new ArrayList<>();
-        for (int i = 0; i < meetings.size(); i++) {
-            Meeting meeting = meetings.get(i);
-            if (meeting.getRoom().getName().equals(roomName.trim()))
-                currentMeetings.add(meeting);
-        }
-        return currentMeetings;
-    }
 
     /**
      * Get Meeting's list filtered by date
      */
 
-    public List<Meeting> getMeetingMatchDate(GregorianCalendar date) {
+    public List<Meeting> getMeetingsMatchDate(Date date) {
         List<Meeting> currentMeetings = new ArrayList<>();
         for (int i = 0; i < meetings.size(); i++) {
             Meeting meeting = meetings.get(i);
-            if (meeting.getDate().get(Calendar.MONTH) == date.get(Calendar.MONTH) && meeting.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && meeting.getDate().get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH))
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+            if (sdf.format(meeting.getDate()).equals(sdf.format(date)))
+                currentMeetings.add(meeting);
+        }
+        return currentMeetings;
+    }
+
+    public List<Meeting> getMeetingsMatchRoom(Room room) {
+        List<Meeting> currentMeetings = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
+            Meeting meeting = meetings.get(i);
+            if (meeting.getRoom().getName().equals(room.getName()))
                 currentMeetings.add(meeting);
         }
         return currentMeetings;

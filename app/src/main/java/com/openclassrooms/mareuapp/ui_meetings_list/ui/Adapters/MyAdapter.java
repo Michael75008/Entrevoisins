@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.openclassrooms.mareuapp.DI.DI;
+import com.openclassrooms.mareuapp.Events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
-import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-import com.openclassrooms.mareuapp.service.Dummys.DummyMeetingApiService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +32,12 @@ import butterknife.ButterKnife;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<Meeting> mMeetings;
+    private final List<Meeting> mMeetings;
     Context mContext;
-    MeetingApiService mMeetingApiService;
 
-    public MyAdapter(List<Meeting> items, Context context) {
-        this.mMeetings = items;
+    public MyAdapter(Context context, List<Meeting> meetings) {
         this.mContext = context;
-        mMeetingApiService = DI.getMeetingApiService();
+        this.mMeetings = meetings;
     }
 
     public void updateMeeting(List<Meeting> newMeetings) {
@@ -66,9 +65,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mMeetingApiService.deleteMeeting(meeting);
-                notifyDataSetChanged();
-                Toast.makeText(mContext, "La réunion a été supprimée", Toast.LENGTH_LONG).show();
+                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+                Toast.makeText(mContext, "La réunion a été supprimée", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -88,6 +86,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         @BindView(R.id.item_logo)
         public ImageView mMeetingMarker;
 
+
         public ViewHolder(View itemview) {
             super(itemview);
             ButterKnife.bind(this, itemview);
@@ -101,7 +100,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Participant participant = meeting.getParticipants().get(i);
                     titleResult.append(participant.getMail());
                     if (i < participants.size() - 1) {
-                        titleResult.append(", "); }
+                        titleResult.append(", ");
+                    }
                 }
             }
 
@@ -111,8 +111,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             subTitleResult.append(" - ");
 
-            DateFormat dateFormat1 = new SimpleDateFormat("HH:mm");
-            String hour = dateFormat1.format(meeting.getDate().getTime());
+            DateFormat dateFormat1 = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+            String hour = dateFormat1.format(meeting.getDate());
             subTitleResult.append(hour);
 
             subTitleResult.append(" - ");

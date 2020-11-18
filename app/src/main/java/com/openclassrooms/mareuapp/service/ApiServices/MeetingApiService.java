@@ -1,8 +1,9 @@
 package com.openclassrooms.mareuapp.service.ApiServices;
 
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.model.Room;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 public interface MeetingApiService {
@@ -32,19 +33,17 @@ public interface MeetingApiService {
 
     /**
      * Get Meeting's list filtered by Room
-     * @param roomName
-     * @return
      */
 
-    List<Meeting> getMeetingsMatchRoomName(String roomName);
+    List<Meeting> getMeetingsMatchRoom(Room room);
 
     /**
      * Get Meeting's list filtered by date
+     *
      * @param date
      * @return
      */
 
-    List<Meeting> getMeetingMatchDate(GregorianCalendar date);
-
+    List<Meeting> getMeetingsMatchDate(Date date);
 
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Room;
+import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
 
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class CustomRoomAdapter extends ArrayAdapter<Room> {
     public CustomRoomAdapter(Context context, List<Room> rooms) {
         super(context, 0, rooms);
         this.mRoomList = rooms;
-        this.mLayoutInflater = (LayoutInflater.from(context)); }
+        this.mLayoutInflater = (LayoutInflater.from(context));
+    }
 
     @Override
     public int getCount() {
