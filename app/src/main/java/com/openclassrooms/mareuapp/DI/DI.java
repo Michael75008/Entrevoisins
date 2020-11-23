@@ -1,5 +1,6 @@
 package com.openclassrooms.mareuapp.DI;
 
+import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
@@ -38,5 +39,21 @@ public class DI {
 
     public static ParticipantApiService getParticipantService() {
         return participantService;
+    }
+
+    /**
+     * Get always a new instance on MeetingApiService.
+     */
+
+    public static MeetingApiService getNewInstanceMeetingApiService() {
+        return new DummyMeetingApiService();
+    }
+
+    public static RoomApiService getNewInstanceRoomApiService() {
+        return new DummyRoomApiService();
+    }
+
+    public static ParticipantApiService getNewInstanceParticipantApiService() {
+        return new DummyParticipantApiService();
     }
 }

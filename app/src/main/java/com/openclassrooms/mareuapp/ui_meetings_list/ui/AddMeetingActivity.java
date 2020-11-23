@@ -1,11 +1,6 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,18 +23,24 @@ import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
+
+import static com.openclassrooms.mareuapp.R.string.ActionBarAddMeeting;
+import static com.openclassrooms.mareuapp.R.string.RéuNotRegistred;
+import static com.openclassrooms.mareuapp.R.string.choosenDate;
+import static com.openclassrooms.mareuapp.R.string.choosenHour;
+import static com.openclassrooms.mareuapp.R.string.colon;
+import static com.openclassrooms.mareuapp.R.string.slash;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -48,30 +49,30 @@ public class AddMeetingActivity extends AppCompatActivity {
     ParticipantApiService mParticipantApiService;
     MeetingApiService mMeetingApiService;
     Room mRoomValidator;
-    Calendar mDateValidator;
+    Calendar mDateCalendar;
     Date mDateMeeting;
     List<Participant> mParticipantsValidator;
+    List<Room> mRoomList;
     MyValidator mMyValidator;
     CustomParticipantAdapter recyclerAdapter;
+    CustomRoomAdapter mRoomAdapter;
     List<Participant> mParticipantList;
     List<Meeting> mMeetingList;
     Pickers mPickers;
     int uniqueId;
 
-
-    @BindView(R.id.room_list)
-    AutoCompleteTextView mRoomNameAutoCompleteTextView;
+    @BindView(R.id.room_choice)
+    TextView mRoomChoice;
     @BindView(R.id.date_view)
     TextView mdate;
     @BindView(R.id.time_view)
     TextView mTime;
     @BindView(R.id.meeting_topic)
     EditText mName;
-    @BindView(R.id.room_item)
-    TextView mRoomName;
     @BindView(R.id.participant_recycler_view)
     RecyclerView mRecyclerView;
-
+    @BindView(R.id.room_list)
+    RecyclerView mRecyclerView2;
 
     protected void onCreate(Bundle savedInstanceStace) {
         super.onCreate(savedInstanceStace);
@@ -80,76 +81,67 @@ public class AddMeetingActivity extends AppCompatActivity {
         initData();
         setActionBar();
         setParticipantsAdapters();
+        setRoomsAdapter();
+        onSupportDateAndTime();
     }
 
     public int getUniqueId() {
         return uniqueId++;
     }
 
-    @OnTouch(R.id.room_list)
-    boolean onTouch(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mRoomNameAutoCompleteTextView.showDropDown();
-            setRoomsAdapter();
-            return true;
-        }
-        return (event.getAction() == MotionEvent.ACTION_UP);
-    }
-
     @OnClick(R.id.date_image)
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-            mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
-            mDateValidator.set(year, month, day);
+            mdate.setText(choosenDate + day + slash + (month + 1) + slash + year);
+            mDateCalendar.set(year, month, day);
         });
     }
 
     @OnClick(R.id.time_image)
     public void onTimeClick() {
         mPickers.showTime(this, (timePicker, hours, minutes) -> {
-            mTime.setText("Heure de réunion choisie :" + hours + ":" + minutes);
-            mDateValidator.set(Calendar.HOUR_OF_DAY, hours);
-            mDateValidator.set(Calendar.MINUTE, minutes);
+            mTime.setText(choosenHour + hours + colon + minutes);
+            mDateCalendar.set(Calendar.HOUR_OF_DAY, hours);
+            mDateCalendar.set(Calendar.MINUTE, minutes);
         });
     }
 
     void initData() {
-        mMyValidator = new MyValidator();
-        mRoomApiService = DI.getRoomApiService();
-        mParticipantApiService = DI.getParticipantService();
         mMeetingApiService = DI.getMeetingApiService();
-        mDateValidator = Calendar.getInstance();
-        mDateMeeting = mDateValidator.getTime();
-        mParticipantList = mParticipantApiService.getParticipants();
         mMeetingList = mMeetingApiService.getMeetings();
+        mRoomApiService = DI.getRoomApiService();
+        mRoomList = mRoomApiService.getRooms();
+        mParticipantApiService = DI.getParticipantService();
+        mParticipantList = mParticipantApiService.getParticipants();
+        mMyValidator = new MyValidator();
+        mDateCalendar = Calendar.getInstance();
+        mDateMeeting = mDateCalendar.getTime();
         mParticipantsValidator = new ArrayList<>();
+        mRoomValidator = new Room();
         mPickers = new Pickers();
         uniqueId = mMeetingList.size();
-        mdate.setText(LocalDate.now().getDayOfMonth() + "/" + LocalDate.now().getMonthValue() + "/" + LocalDate.now().getYear());
-        mTime.setText(LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
     }
 
     private void setActionBar() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Ma Réu - Ajout de Réunion");
+        getSupportActionBar().setTitle(ActionBarAddMeeting);
     }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        Toast.makeText(getApplicationContext(), "Réunion non enregistrée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), RéuNotRegistred, Toast.LENGTH_SHORT).show();
         return true;
     }
 
+    public void onSupportDateAndTime() {
+        mdate.setText(new SimpleDateFormat(getString(R.string.ddMMyyyyPatern), Locale.FRANCE).format(new Date()));
+        mTime.setText(new SimpleDateFormat(getString(R.string.HHmmPatern), Locale.FRANCE).format(new Date()));
+    }
+
     private void setRoomsAdapter() {
-        CustomRoomAdapter customRoomAdapter = new CustomRoomAdapter(AddMeetingActivity.this, mRoomApiService.getRooms());
-        mRoomNameAutoCompleteTextView.setAdapter(customRoomAdapter);
-        mRoomNameAutoCompleteTextView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-                mRoomValidator = mRoomApiService.getRooms().get(position);
-                mRoomNameAutoCompleteTextView.setText(mRoomValidator.getName());
-            }
-        });
+        mRecyclerView2.setLayoutManager(new GridLayoutManager(this, 2));
+        mRoomAdapter = new CustomRoomAdapter(AddMeetingActivity.this, mRoomList, mRoomValidator);
+        mRecyclerView2.setAdapter(mRoomAdapter);
     }
 
     private void setParticipantsAdapters() {

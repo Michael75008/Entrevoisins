@@ -18,13 +18,13 @@ public class MyValidator {
     }
 
     public ValidatorModel checkMeeting(Meeting meeting) {
-        if(meeting == null){
+        if (meeting == null) {
             validatorModel.setValid(false);
             return validatorModel;
         }
         validatorModel.setValid(true);
         check(meeting.getName().isEmpty(), ERROR_NAME);
-        check(meeting.getRoom() == null, ERROR_ROOM);
+        check(meeting.getRoom().getName() == null, ERROR_ROOM);
         check(meeting.getParticipants().size() == 0, ERROR_PARTICIPANT);
         return validatorModel;
     }

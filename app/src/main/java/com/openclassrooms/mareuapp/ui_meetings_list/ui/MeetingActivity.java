@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +53,10 @@ public class MeetingActivity extends AppCompatActivity {
     Calendar mCalendar;
     Date mDate;
 
+    public final static String EMPTY_FULL_LIST = "La liste de réunion est vide";
+    public final static String EMPTY_DATE = "Aucune réunion à cette date";
+    public final static String EMPTY_ROOM = "Aucune réunion pour cette salle";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +82,8 @@ public class MeetingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.getallmeetings:
-                initData();
+                mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
+                utilsForFilter(EMPTY_FULL_LIST);
                 return true;
 
             case R.id.filterbydate:
@@ -84,19 +91,24 @@ public class MeetingActivity extends AppCompatActivity {
                     mCalendar.set(year, month, day);
                     mDate = mCalendar.getTime();
                     mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchDate(mDate));
+                    utilsForFilter(EMPTY_DATE);
                 });
                 return true;
 
             case R.id.Peach:
                 mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(0)));
+                utilsForFilter(EMPTY_ROOM);
                 return true;
 
             case R.id.Mario:
                 mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
+                utilsForFilter(EMPTY_ROOM);
+
                 return true;
 
             case R.id.Luigi:
                 mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(2)));
+                utilsForFilter(EMPTY_ROOM);
                 return true;
 
             default:
@@ -107,33 +119,35 @@ public class MeetingActivity extends AppCompatActivity {
     void initData() {
         mMeetingApiService = DI.getMeetingApiService();
         mRoomApiService = DI.getRoomApiService();
-        mMeetings = mMeetingApiService.getMeetings();
-        mMyAdapter = new MyAdapter(this, mMeetings);
-        mRecyclerView.setAdapter(mMyAdapter);
         mPickers = new Pickers();
         mCalendar = Calendar.getInstance();
         mDate = new Date();
+        mMeetings = new ArrayList<>();
+        mMyAdapter = new MyAdapter(this, mMeetings);
+        mRecyclerView.setAdapter(mMyAdapter);
     }
 
+    void utilsForFilter(String message) {
+        if (mMeetings.isEmpty())
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        initData();
+        mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
     }
 
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        initData();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        initData();
     }
 
     private void setActionBar() {
@@ -144,6 +158,6 @@ public class MeetingActivity extends AppCompatActivity {
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
         mMeetingApiService.deleteMeeting(event.meeting);
-        initData();
+        mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
     }
 }

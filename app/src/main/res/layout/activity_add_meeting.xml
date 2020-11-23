@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -22,27 +23,26 @@
             android:maxLines="1"
             android:maxLength="20"/>
 
-        <TextView
-            android:id="@+id/room_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/room_list"
-            app:layout_constraintEnd_toEndOf="@+id/room_list"
-            app:layout_constraintStart_toStartOf="@+id/room_list"
-            app:layout_constraintTop_toTopOf="@+id/room_list" />
 
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/room_list"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
+        <TextView
+            android:id="@+id/room_choice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
             android:hint="Choisissez la salle de réunion"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/meeting_topic"
             app:layout_constraintStart_toStartOf="@+id/meeting_topic"
-            app:layout_constraintTop_toBottomOf="@+id/meeting_topic" />
+            app:layout_constraintTop_toBottomOf="@+id/meeting_topic"
+            android:gravity="center_horizontal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/room_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/room_choice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/room_choice" />
 
         <ImageButton
             android:id="@+id/date_image"
@@ -110,8 +110,8 @@
             android:layout_marginRight="24dp"
             android:textAlignment="center"
             android:hint="Selectionnez les participants"
-            app:layout_constraintEnd_toEndOf="@+id/room_item"
-            app:layout_constraintStart_toStartOf="@+id/room_item"
+            app:layout_constraintEnd_toEndOf="@+id/room_list"
+            app:layout_constraintStart_toStartOf="@+id/room_list"
             app:layout_constraintTop_toBottomOf="@+id/room_list"
             android:gravity="center_horizontal" />
 

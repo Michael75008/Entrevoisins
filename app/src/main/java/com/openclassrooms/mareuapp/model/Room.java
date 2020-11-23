@@ -39,6 +39,10 @@ public class Room implements Serializable {
         this.name = name;
     }
 
+    public Room(){
+
+    }
+
     /**
      * Getters and setters
      * @return
@@ -47,4 +51,6 @@ public class Room implements Serializable {
     public int getImage() { return image; }
 
     public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 }

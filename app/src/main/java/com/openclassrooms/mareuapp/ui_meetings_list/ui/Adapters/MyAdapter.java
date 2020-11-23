@@ -46,6 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
         View view = LayoutInflater.from((parent.getContext()))
