@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.openclassrooms.mareuapp.R;
@@ -18,13 +19,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import static android.app.PendingIntent.getActivity;
+import static android.service.autofill.Validators.not;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -33,11 +38,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 
-@RunWith(JUnit4.class)
+@RunWith(AndroidJUnit4.class)
 public class AddMeetingInstrTest {
 
     @Rule
@@ -70,16 +76,16 @@ public class AddMeetingInstrTest {
         onView(allOf(withId(R.id.email), withText("viviane@lamzone.com"))).perform(scrollTo(), click());
         onView(allOf(withId(R.id.email), withText("paul@lamzone.com"))).perform(click());
         onView(allOf(withId(R.id.room), withText("Luigi"))).perform(scrollTo(), click());
-        onView(Matchers.allOf(instanceOf(EditText.class), withId(R.id.meeting_topic))).perform(replaceText("Réunion X"));
         onView(allOf(withId(R.id.validate_meeting), withText("Valider la réunion"))).perform(scrollTo(), click());
-        Intents.init();
-        mActivityRule.launchActivity(new Intent());
-        intended(hasComponent(MeetingActivity.class.getName()));
-
+        AddMeetingActivity activity = mActivityRule.getActivity();
+        onView(withText(R.string.app_name)).inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.item_meeting_name),
                 withParent(allOf(withId(R.id.item_list_container),
-                        withParent(withId(R.id.list_meetings)))))).check(matches(withText("Réunion  - 10:03 - Luigi")));
-        Intents.release();
+                        withParent(withId(R.id.list_meetings)))))).check(matches(withText("Réunion x - 10:03 - Luigi")));
+
+        onView(withText("Selectionnez au moins un participant avant de valider")).
+                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
+                check(matches(isDisplayed()));
     }
 }
 

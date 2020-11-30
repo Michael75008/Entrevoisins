@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.openclassrooms.mareuapp.R;
@@ -41,7 +42,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 
-@RunWith(JUnit4.class)
+@RunWith(AndroidJUnit4.class)
 public class MeetingActivityInstrTest {
 
     private Calendar mCalendar = Calendar.getInstance();
