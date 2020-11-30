@@ -12,14 +12,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.openclassrooms.mareuapp.DI.DI;
-import com.openclassrooms.mareuapp.Events.DeleteMeetingEvent;
+import com.openclassrooms.mareuapp.di.DI;
+import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.Utils.Pickers;
+import com.openclassrooms.mareuapp.utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
-import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
-import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.MyAdapter;
+import com.openclassrooms.mareuapp.service.apiservice.MeetingApiService;
+import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.MyAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

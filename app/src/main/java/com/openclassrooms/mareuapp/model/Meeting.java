@@ -1,8 +1,6 @@
 package com.openclassrooms.mareuapp.model;
 
 
-import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +53,12 @@ public class Meeting implements Serializable {
         mParticipants = participants;
     }
 
-    public Meeting(int id){
+    public Meeting(int id) {
         this.id = id;
+    }
+
+    public Meeting() {
+
     }
 
 

@@ -9,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openclassrooms.mareuapp.DI.DI;
+import com.openclassrooms.mareuapp.di.DI;
 import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.Utils.MyValidator;
-import com.openclassrooms.mareuapp.Utils.Pickers;
+import com.openclassrooms.mareuapp.utils.MyValidator;
+import com.openclassrooms.mareuapp.utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.model.ValidatorModel;
-import com.openclassrooms.mareuapp.service.ApiServices.MeetingApiService;
-import com.openclassrooms.mareuapp.service.ApiServices.ParticipantApiService;
-import com.openclassrooms.mareuapp.service.ApiServices.RoomApiService;
-import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomParticipantAdapter;
-import com.openclassrooms.mareuapp.ui_meetings_list.ui.Adapters.CustomRoomAdapter;
+import com.openclassrooms.mareuapp.service.apiservice.MeetingApiService;
+import com.openclassrooms.mareuapp.service.apiservice.ParticipantApiService;
+import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomParticipantAdapter;
+import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomRoomAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
