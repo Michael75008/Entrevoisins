@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -17,23 +16,23 @@
             android:layout_margin="24dp"
             android:autofillHints="MeetingName"
             android:hint="Topic de la réunion"
+            android:maxLength="20"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:maxLines="1"
-            android:maxLength="20"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
             android:id="@+id/room_choice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Choisissez la salle de réunion"
             android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:hint="Choisissez la salle de réunion"
             app:layout_constraintEnd_toEndOf="@+id/meeting_topic"
             app:layout_constraintStart_toStartOf="@+id/meeting_topic"
-            app:layout_constraintTop_toBottomOf="@+id/meeting_topic"
-            android:gravity="center_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/meeting_topic" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/room_list"
@@ -60,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
-            android:textSize="16sp"
             android:text="Valider la réunion"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/time_view"
             app:layout_constraintStart_toStartOf="@+id/time_view"
             app:layout_constraintTop_toBottomOf="@+id/time_view" />
@@ -108,12 +107,12 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginRight="24dp"
-            android:textAlignment="center"
+            android:gravity="center_horizontal"
             android:hint="Selectionnez les participants"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/room_list"
             app:layout_constraintStart_toStartOf="@+id/room_list"
-            app:layout_constraintTop_toBottomOf="@+id/room_list"
-            android:gravity="center_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/room_list" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/participant_recycler_view"

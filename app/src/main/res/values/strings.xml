@@ -26,8 +26,5 @@
     <string name="ActionBarAddMeeting">Ma Réu - Ajout de Réunion</string>
     <string name="HHmmPatern">HH:mm</string>
     <string name="ddMMyyyyPatern">dd-MM-yyyy</string>
-    <string name="slash">/</string>
-    <string name="colon">:</string>
-    <string name="choosenHour">Heure de réunion choisie :</string>
-    <string name="choosenDate">\"Date de réunion choisie : \"</string>
+
 </resources>

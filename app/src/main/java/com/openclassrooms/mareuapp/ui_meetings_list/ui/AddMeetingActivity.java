@@ -1,6 +1,5 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,15 +34,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
-import butterknife.OnTouch;
 
 import static com.openclassrooms.mareuapp.R.string.ActionBarAddMeeting;
 import static com.openclassrooms.mareuapp.R.string.RéuNotRegistred;
-import static com.openclassrooms.mareuapp.R.string.choosenDate;
-import static com.openclassrooms.mareuapp.R.string.choosenHour;
-import static com.openclassrooms.mareuapp.R.string.colon;
-import static com.openclassrooms.mareuapp.R.string.slash;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -52,7 +45,6 @@ public class AddMeetingActivity extends AppCompatActivity {
     ParticipantApiService mParticipantApiService;
     MeetingApiService mMeetingApiService;
     Room mRoomValidator;
-    Calendar mDateCalendar;
     Date mDateMeeting;
     List<Participant> mParticipantsValidator;
     List<Room> mRoomList;
@@ -95,17 +87,22 @@ public class AddMeetingActivity extends AppCompatActivity {
     @OnClick(R.id.date_image)
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-            mdate.setText(choosenDate + day + slash + (month + 1) + slash + year);
-            mDateCalendar.set(year, month, day);
+            mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month, day);
+            mDateMeeting = cal.getTime();
         });
     }
 
     @OnClick(R.id.time_image)
     public void onTimeClick() {
         mPickers.showTime(this, (timePicker, hours, minutes) -> {
-            mTime.setText(choosenHour + hours + colon + minutes);
-            mDateCalendar.set(Calendar.HOUR_OF_DAY, hours);
-            mDateCalendar.set(Calendar.MINUTE, minutes);
+            mTime.setText("Heure de réunion choisie : " + hours + ":" + minutes);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mDateMeeting);
+            calendar.set(Calendar.MINUTE, minutes);
+            calendar.set(Calendar.HOUR_OF_DAY, hours);
+            mDateMeeting = calendar.getTime();
         });
     }
 
@@ -117,8 +114,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         mParticipantApiService = DI.getParticipantService();
         mParticipantList = mParticipantApiService.getParticipants();
         mMyValidator = new MyValidator();
-        mDateCalendar = Calendar.getInstance();
-        mDateMeeting = mDateCalendar.getTime();
         mParticipantsValidator = new ArrayList<>();
         mRoomValidator = new Room();
         mPickers = new Pickers();

@@ -4,16 +4,17 @@ package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.internal.platform.app.ActivityLifecycleTimeout;
 import androidx.test.rule.ActivityTestRule;
 
 import com.openclassrooms.mareuapp.R;
@@ -23,21 +24,16 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.AnyOf;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.closeSoftKeyboard;
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -50,37 +46,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.openclassrooms.mareuapp.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
 
-
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddMeetingInstrTest {
 
     int PARTICIPANTS_COUNT = DI.getParticipantService().getParticipants().size();
     int ROOMS_COUNT = DI.getRoomApiService().getRooms().size();
-    @Rule
-    public ActivityScenarioRule<AddMeetingActivity> mActivityRule =
-            new ActivityScenarioRule<AddMeetingActivity>(AddMeetingActivity.class);
 
-    @Test
-    public void addMeeting_checkBackToPreviousActivity() {
-        //Click on back arrow to return to previous activity
-        ViewInteraction imageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        withParent(allOf(withId(R.id.action_bar),
-                                withParent(withId(R.id.action_bar_container)))),
-                        isDisplayed()));
-        imageButton.check(matches(isDisplayed()));
-        //Ensure we change activity checking appbar title
-        onView(Matchers.allOf(instanceOf(TextView.class),
-                withParent(withResourceName("action_bar"))))
-                .check(matches(withText("Ma Réu")));
-    }
+    @Rule
+    public ActivityTestRule<AddMeetingActivity> mActivityRule =
+            new ActivityTestRule<>(AddMeetingActivity.class);
+
+
 
     @Test
     public void addMeeting_checkMeetingNameInput() {
@@ -94,7 +76,7 @@ public class AddMeetingInstrTest {
     }
 
     @Test
-    public void addMeeting_checkParticipantsSelection() {
+    public void addMeeting_shouldShowEveryParticipantAndLetSelectOrUnselectIt() {
         //Ensure we find all participants on screen for choice
         onView(allOf(isDisplayed(), withId(R.id.participant_recycler_view))).check(withItemCount(PARTICIPANTS_COUNT));
         //Check we can select Viviane and Paul
@@ -105,7 +87,7 @@ public class AddMeetingInstrTest {
     }
 
     @Test
-    public void addMeeting_CheckRoomSelection() {
+    public void addMeeting_shouldShowEveryRoomAndLetItChooseOnlyOne() {
         //Ensure we find all rooms on screen for choice
         onView(allOf(isDisplayed(), withId(R.id.room_list))).check(withItemCount(ROOMS_COUNT));
         //Check we can select a room
@@ -118,15 +100,22 @@ public class AddMeetingInstrTest {
 
 
     @Test
-    public void addMeeting_checkDateAndTimeInput() {
-        //Ensure that we find current date and current time as default choice
+    public void addMeeting_shouldDisplayDateOnScreenWhenChoiceIsDone() {
+        //Click on date icon to open date picker
         onView(allOf(withId(R.id.date_image))).perform(click());
-        //Check we can choose date
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2021, 12, 24));
+        //Select a date in future on calendar: 24/12/2050
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2050, 12, 24));
         //Perform a click to confirm date
-        onView(withText("OK")).perform(scrollTo()).perform(click());
-        // Check we can choose time
-        //Ensure that we changed it on screen
+        onView(withText("OK")).perform(click());
+        //Ensure that new date is shown to user
+        onView(withId(R.id.date_view)).check(matches(withText("Date de réunion choisie : 24/12/2050")));
+        //Click on time icon to open time picker
+        onView(allOf(withId(R.id.time_image))).perform(click());
+        // Select a time: 18:30
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        //Ensure that new time is shown to user
+        onView(withText("OK")).perform(click());
+        //Ensure that new hour has been correctly displayed on screen
+        onView(withId(R.id.time_view)).check(matches(withText("Heure de réunion choisie : 18:30")));
     }
-
 }
