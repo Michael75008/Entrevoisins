@@ -1,5 +1,7 @@
 package com.openclassrooms.mareuapp.model;
 
+import android.graphics.drawable.Drawable;
+
 import java.io.Serializable;
 
 /**
@@ -8,11 +10,24 @@ import java.io.Serializable;
 
 public class Room implements Serializable {
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
      * Identifier
      */
 
     private long id;
+
+
+    public void setImage(int image) {
+        this.image = image;
+    }
 
     /**
      * Room color/image
@@ -39,9 +54,7 @@ public class Room implements Serializable {
         this.name = name;
     }
 
-    public Room(){
-
-    }
+    public Room() {}
 
     /**
      * Getters and setters

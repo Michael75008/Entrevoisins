@@ -1,5 +1,6 @@
 package com.openclassrooms.mareuapp.ui_meetings_list.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
+import butterknife.OnTouch;
 
 import static com.openclassrooms.mareuapp.R.string.ActionBarAddMeeting;
 import static com.openclassrooms.mareuapp.R.string.RéuNotRegistred;

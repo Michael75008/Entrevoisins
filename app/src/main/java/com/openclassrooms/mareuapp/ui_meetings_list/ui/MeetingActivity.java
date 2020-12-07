@@ -103,7 +103,6 @@ public class MeetingActivity extends AppCompatActivity {
             case R.id.Mario:
                 mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
                 utilsForFilter(EMPTY_ROOM);
-
                 return true;
 
             case R.id.Luigi:

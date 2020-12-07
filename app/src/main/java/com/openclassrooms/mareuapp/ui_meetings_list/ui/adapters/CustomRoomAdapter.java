@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.model.Room;
 
@@ -43,8 +45,20 @@ public class CustomRoomAdapter extends RecyclerView.Adapter<CustomRoomAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Room room = mRoomList.get(position);
         holder.mRadioButton.setText(room.getName());
-        holder.mRoomImage.setImageResource(room.getImage());
+        Glide.with(holder.mRoomImage.getContext())
+                .load(room.getImage())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.mRoomImage);
         holder.mRadioButton.setChecked(lastSelectedPosition == position);
+        holder.mRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRoom.setName(room.getName());
+                mRoom.setImage(room.getImage());
+                lastSelectedPosition = holder.getAdapterPosition();
+                notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -66,15 +80,6 @@ public class CustomRoomAdapter extends RecyclerView.Adapter<CustomRoomAdapter.My
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-
-            mRadioButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mRoom.setName(mRadioButton.getText().toString());
-                    lastSelectedPosition = getAdapterPosition();
-                    notifyDataSetChanged();
-                }
-            });
         }
     }
 }

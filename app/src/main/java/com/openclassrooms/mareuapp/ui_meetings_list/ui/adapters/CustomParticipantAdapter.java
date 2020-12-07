@@ -2,9 +2,11 @@ package com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -45,7 +47,10 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
         holder.ParticipantsName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mNewParticipants.add(participant);
+                if(holder.ParticipantsName.isChecked()) {
+                    mNewParticipants.add(participant);
+                }
+            else mNewParticipants.remove(participant);
             }
         });
     }
