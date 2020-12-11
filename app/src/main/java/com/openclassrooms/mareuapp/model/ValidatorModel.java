@@ -20,17 +20,15 @@ public class ValidatorModel {
 
     /**
      * Constructor
-     * @param isValid
-     * @param errorMessage
      */
 
     public ValidatorModel(boolean isValid, String errorMessage) {
         this.isValid = isValid;
-        this.errorMessage = errorMessage; }
+        this.errorMessage = errorMessage;
+    }
 
     /**
      * Getters and setters
-     * @return
      */
 
     public boolean isValid() { return isValid; }

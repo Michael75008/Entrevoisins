@@ -1,44 +1,37 @@
 package com.openclassrooms.mareuapp.model;
 
-import com.google.android.material.chip.Chip;
-
 import java.io.Serializable;
 
 /**
  * Model object representing a participant
  */
+
 public class Participant implements Serializable {
 
     /**
      * Identifier
      */
 
-    private int Id;
+    private int id;
 
     /**
      * Email
      */
 
-    private String Mail;
+    private String mEmail;
 
     /**
      * Constructor
-     * @param id
-     * @param email
      */
 
     public Participant(int id, String email) {
-        this.Id = id;
-        this.Mail = email; }
+        this.id = id;
+        this.mEmail = email;
+    }
 
     /**
      * Getters and setters
-     * @return
      */
 
-    public String getMail() { return Mail; }
-
-    public int getId() { return Id; }
-
-    public void setId(int id) { Id = id; }
+    public String getMail() { return mEmail; }
 }

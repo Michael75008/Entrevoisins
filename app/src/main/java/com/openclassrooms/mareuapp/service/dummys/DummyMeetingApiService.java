@@ -14,45 +14,38 @@ import java.util.Locale;
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    private final List<Meeting> meetings = MeetingApiServiceGenerator.generateMeetings();
+    private final List<Meeting> mMeetings = MeetingApiServiceGenerator.generateMeetings();
 
     /**
-     * Get Meeting's List
+     * Get meeting's List
      */
 
     public List<Meeting> getMeetings() {
-        return meetings;
+        return mMeetings;
     }
 
     /**
-     * Deletes a Meeting from List
+     * Deletes a meeting from List
      */
 
     public void deleteMeeting(Meeting meeting) {
-        meetings.remove(meeting);
+        mMeetings.remove(meeting);
     }
 
     /**
-     * Creates a Meeting and add it to List
+     * Creates a meeting and add it to List
      */
 
-    public void createMeeting(Meeting meeting) {
-        meetings.add(meeting);
-    }
-
+    public void createMeeting(Meeting meeting) { mMeetings.add(meeting); }
 
     /**
-     * Get Meeting's list filtered by Room
-     */
-
-    /**
-     * Get Meeting's list filtered by date
+     * Get meeting's list filtered by date
      */
 
     public List<Meeting> getMeetingsMatchDate(Date date) {
         List<Meeting> currentMeetings = new ArrayList<>();
-        for (int i = 0; i < meetings.size(); i++) {
-            Meeting meeting = meetings.get(i);
+        for (int i = 0; i < mMeetings.size(); i++) {
+            Meeting meeting = mMeetings.get(i);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE);
             if (sdf.format(meeting.getDate()).equals(sdf.format(date)))
                 currentMeetings.add(meeting);
@@ -61,13 +54,13 @@ public class DummyMeetingApiService implements MeetingApiService {
     }
 
     /**
-     * Get Meeting's list filtered by room name
+     * Get meeting's list filtered by room name
      */
 
     public List<Meeting> getMeetingsMatchRoom(Room room) {
         List<Meeting> currentMeetings = new ArrayList<>();
-        for (int i = 0; i < meetings.size(); i++) {
-            Meeting meeting = meetings.get(i);
+        for (int i = 0; i < mMeetings.size(); i++) {
+            Meeting meeting = mMeetings.get(i);
             if (meeting.getRoom().getName().equals(room.getName()))
                 currentMeetings.add(meeting);
         }

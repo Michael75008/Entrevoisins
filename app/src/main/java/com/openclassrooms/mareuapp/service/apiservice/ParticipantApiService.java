@@ -12,5 +12,4 @@ public interface ParticipantApiService {
      */
 
     List<Participant> getParticipants();
-
 }

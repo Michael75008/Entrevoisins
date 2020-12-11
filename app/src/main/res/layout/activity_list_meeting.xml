@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui_meetings_list.ui.MeetingActivity"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".ui_meetings_list.ui.MeetingActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -27,11 +27,9 @@
         android:id="@+id/list_meetings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
-        android:fitsSystemWindows="true"
         android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_meeting"
@@ -41,9 +39,9 @@
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/red"
         android:clickable="true"
+        android:focusable="true"
         app:maxImageSize="50dp"
         app:srcCompat="@drawable/ic_add_icon_foreground"
-        tools:targetApi="lollipop"
-        android:focusable="true" />
+        tools:targetApi="lollipop" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

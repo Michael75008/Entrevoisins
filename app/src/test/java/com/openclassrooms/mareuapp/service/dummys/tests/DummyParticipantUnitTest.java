@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class DummyParticipantTest {
+public class DummyParticipantUnitTest {
 
     private ParticipantApiService participantService;
 

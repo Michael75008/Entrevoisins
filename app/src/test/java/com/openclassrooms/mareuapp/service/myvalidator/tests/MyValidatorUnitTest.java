@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(JUnit4.class)
-public class MyValidatorInstrTest {
+public class MyValidatorUnitTest {
 
     @Test
     public void checkMeetingWithMeetingNull() {

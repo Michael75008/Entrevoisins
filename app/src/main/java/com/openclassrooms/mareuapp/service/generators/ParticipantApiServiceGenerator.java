@@ -19,6 +19,4 @@ public class ParticipantApiServiceGenerator {
     public static List<Participant> generateParticipants() {
         return new ArrayList<>(PARTICIPANT);
     }
-
-
 }

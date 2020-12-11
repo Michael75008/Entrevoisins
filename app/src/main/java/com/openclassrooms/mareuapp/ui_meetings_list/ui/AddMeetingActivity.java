@@ -48,8 +48,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     Date mDateMeeting;
     List<Participant> mParticipantsValidator;
     List<Room> mRoomList;
-    MyValidator mMyValidator;
-    CustomParticipantAdapter recyclerAdapter;
+    MyValidator mValidator;
+    CustomParticipantAdapter mParticipantAdapter;
     CustomRoomAdapter mRoomAdapter;
     List<Participant> mParticipantList;
     List<Meeting> mMeetingList;
@@ -59,15 +59,15 @@ public class AddMeetingActivity extends AppCompatActivity {
     @BindView(R.id.room_choice)
     TextView mRoomChoice;
     @BindView(R.id.date_view)
-    TextView mdate;
+    TextView mDate;
     @BindView(R.id.time_view)
     TextView mTime;
     @BindView(R.id.meeting_topic)
     EditText mName;
     @BindView(R.id.participant_recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView mParticipantRecyclerView;
     @BindView(R.id.room_list)
-    RecyclerView mRecyclerView2;
+    RecyclerView mRoomRecyclerView;
 
     protected void onCreate(Bundle savedInstanceStace) {
         super.onCreate(savedInstanceStace);
@@ -87,7 +87,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     @OnClick(R.id.date_image)
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-            mdate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
+            mDate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
             Calendar cal = Calendar.getInstance();
             cal.set(year, month, day);
             mDateMeeting = cal.getTime();
@@ -113,8 +113,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         mRoomList = mRoomApiService.getRooms();
         mParticipantApiService = DI.getParticipantService();
         mParticipantList = mParticipantApiService.getParticipants();
-        mMyValidator = new MyValidator();
+        mValidator = new MyValidator();
         mParticipantsValidator = new ArrayList<>();
+        mDateMeeting = Calendar.getInstance().getTime();
         mRoomValidator = new Room();
         mPickers = new Pickers();
         uniqueId = mMeetingList.size();
@@ -132,20 +133,20 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     public void onSupportDateAndTime() {
-        mdate.setText(new SimpleDateFormat(getString(R.string.ddMMyyyyPatern), Locale.FRANCE).format(new Date()));
+        mDate.setText(new SimpleDateFormat(getString(R.string.ddMMyyyyPatern), Locale.FRANCE).format(new Date()));
         mTime.setText(new SimpleDateFormat(getString(R.string.HHmmPatern), Locale.FRANCE).format(new Date()));
     }
 
     private void setRoomsAdapter() {
-        mRecyclerView2.setLayoutManager(new GridLayoutManager(this, 2));
+        mRoomRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRoomAdapter = new CustomRoomAdapter(AddMeetingActivity.this, mRoomList, mRoomValidator);
-        mRecyclerView2.setAdapter(mRoomAdapter);
+        mRoomRecyclerView.setAdapter(mRoomAdapter);
     }
 
     private void setParticipantsAdapters() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerAdapter = new CustomParticipantAdapter(this, mParticipantList, mParticipantsValidator);
-        mRecyclerView.setAdapter(recyclerAdapter);
+        mParticipantRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mParticipantAdapter = new CustomParticipantAdapter(this, mParticipantList, mParticipantsValidator);
+        mParticipantRecyclerView.setAdapter(mParticipantAdapter);
     }
 
     @OnClick(R.id.validate_meeting)
@@ -157,7 +158,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                 mDateMeeting,
                 mParticipantsValidator
         );
-        ValidatorModel validatorMessage = mMyValidator.checkMeeting(mMeeting);
+        ValidatorModel validatorMessage = mValidator.checkMeeting(mMeeting);
         if (validatorMessage.isValid()) {
             mMeetingApiService.createMeeting(mMeeting);
             finish();

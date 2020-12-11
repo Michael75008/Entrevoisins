@@ -12,18 +12,18 @@ public class Pickers {
     }
 
     public void showCalendar(Context context, DatePickerDialog.OnDateSetListener listener) {
-        Calendar mcurrentDate = (Calendar) Calendar.getInstance();
-        int day = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-        int month = mcurrentDate.get(Calendar.MONTH);
-        int year = mcurrentDate.get(Calendar.YEAR);
+        Calendar mDate = (Calendar) Calendar.getInstance();
+        int day = mDate.get(Calendar.DAY_OF_MONTH);
+        int month = mDate.get(Calendar.MONTH);
+        int year = mDate.get(Calendar.YEAR);
 
         new DatePickerDialog(context, listener, year, month, day).show();
     }
 
     public void showTime(Context context, TimePickerDialog.OnTimeSetListener listener) {
-        Calendar mcurrentTime = (Calendar) Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        Calendar mTime = (Calendar) Calendar.getInstance();
+        int hour = mTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mTime.get(Calendar.MINUTE);
 
         new TimePickerDialog(context, listener, minute, hour, true).show();
     }

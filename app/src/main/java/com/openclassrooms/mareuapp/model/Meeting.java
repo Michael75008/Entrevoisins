@@ -21,7 +21,7 @@ public class Meeting implements Serializable {
      * Meeting name
      */
 
-    private String name;
+    private String mName;
 
     /**
      * Meeting Room
@@ -47,7 +47,7 @@ public class Meeting implements Serializable {
 
     public Meeting(int id, String name, Room room, Date date, List<Participant> participants) {
         this.id = id;
-        this.name = name;
+        this.mName = name;
         this.mDate = date;
         this.mRoom = room;
         mParticipants = participants;
@@ -57,23 +57,14 @@ public class Meeting implements Serializable {
         this.id = id;
     }
 
-    public Meeting() {
-
-    }
-
+    public Meeting() {}
 
     /**
      * Getters and setters
-     *
-     * @return
      */
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return mName;
     }
 
     public Date getDate() {
@@ -88,25 +79,7 @@ public class Meeting implements Serializable {
         return mParticipants;
     }
 
-    public void setParticipants(List<Participant> participants) {
-        mParticipants = participants;
-    }
-
     public Room getRoom() {
         return mRoom;
     }
-
-    public void setRoom(Room room) {
-        mRoom = room;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
 }

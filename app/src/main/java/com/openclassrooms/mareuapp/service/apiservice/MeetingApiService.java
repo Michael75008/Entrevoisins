@@ -10,23 +10,18 @@ public interface MeetingApiService {
 
     /**
      * Gets all Meetings
-     *
-     * @return(@link list)
      */
+
     List<Meeting> getMeetings();
 
     /**
      * Deletes a Meeting
-     *
-     * @param meeting
      */
 
     void deleteMeeting(Meeting meeting);
 
     /**
      * Creates a Meeting
-     *
-     * @param meeting
      */
 
     void createMeeting(Meeting meeting);
@@ -39,11 +34,7 @@ public interface MeetingApiService {
 
     /**
      * Get Meeting's list filtered by date
-     *
-     * @param date
-     * @return
      */
 
     List<Meeting> getMeetingsMatchDate(Date date);
-
 }

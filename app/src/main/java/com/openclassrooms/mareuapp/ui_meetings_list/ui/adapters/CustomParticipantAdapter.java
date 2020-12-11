@@ -41,11 +41,11 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Participant participant = mParticipantsList.get(position);
-        holder.ParticipantsName.setText(participant.getMail());
-        holder.ParticipantsName.setOnClickListener(new View.OnClickListener() {
+        holder.mParticipantsEmail.setText(participant.getMail());
+        holder.mParticipantsEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.ParticipantsName.isChecked()) {
+                if (holder.mParticipantsEmail.isChecked()) {
                     mNewParticipants.add(participant);
                 } else mNewParticipants.remove(participant);
             }
@@ -60,9 +60,7 @@ public class CustomParticipantAdapter extends RecyclerView.Adapter<CustomPartici
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.email)
-        CheckBox ParticipantsName;
-        @BindView(R.id.view)
-        LinearLayout RootView;
+        CheckBox mParticipantsEmail;
 
         public MyViewHolder(View view) {
             super(view);

@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
+import static com.openclassrooms.mareuapp.R.id.masked;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
 import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
@@ -46,9 +47,9 @@ public class MeetingActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
 
     MeetingApiService mMeetingApiService;
-    List<Meeting> mMeetings;
     RoomApiService mRoomApiService;
-    MyAdapter mMyAdapter;
+    List<Meeting> mMeetings;
+    MyAdapter mAdapter;
     Pickers mPickers;
     Calendar mCalendar;
     Date mDate;
@@ -82,7 +83,7 @@ public class MeetingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.getallmeetings:
-                mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
+                mAdapter.updateMeeting(mMeetingApiService.getMeetings());
                 utilsForFilter(EMPTY_FULL_LIST);
                 return true;
 
@@ -90,23 +91,23 @@ public class MeetingActivity extends AppCompatActivity {
                 mPickers.showCalendar(this, (datePicker, year, month, day) -> {
                     mCalendar.set(year, month, day);
                     mDate = mCalendar.getTime();
-                    mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchDate(mDate));
+                    mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchDate(mDate));
                     utilsForFilter(EMPTY_DATE);
                 });
                 return true;
 
             case R.id.Peach:
-                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(0)));
+                mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(0)));
                 utilsForFilter(EMPTY_ROOM);
                 return true;
 
             case R.id.Mario:
-                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
+                mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
                 utilsForFilter(EMPTY_ROOM);
                 return true;
 
             case R.id.Luigi:
-                mMyAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(2)));
+                mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(2)));
                 utilsForFilter(EMPTY_ROOM);
                 return true;
 
@@ -122,8 +123,8 @@ public class MeetingActivity extends AppCompatActivity {
         mCalendar = Calendar.getInstance();
         mDate = new Date();
         mMeetings = new ArrayList<>();
-        mMyAdapter = new MyAdapter(this, mMeetings);
-        mRecyclerView.setAdapter(mMyAdapter);
+        mAdapter = new MyAdapter(this, mMeetings);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     void utilsForFilter(String message) {
@@ -134,7 +135,7 @@ public class MeetingActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
+        mAdapter.updateMeeting(mMeetingApiService.getMeetings());
     }
 
     @Override
@@ -157,6 +158,6 @@ public class MeetingActivity extends AppCompatActivity {
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
         mMeetingApiService.deleteMeeting(event.meeting);
-        mMyAdapter.updateMeeting(mMeetingApiService.getMeetings());
+        mAdapter.updateMeeting(mMeetingApiService.getMeetings());
     }
 }

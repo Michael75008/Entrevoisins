@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class DummyRoomTest {
+public class DummyRoomUnitTest {
 
     private RoomApiService roomService;
 

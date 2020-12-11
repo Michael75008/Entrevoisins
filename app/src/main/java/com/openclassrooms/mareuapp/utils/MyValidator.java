@@ -14,7 +14,6 @@ public class MyValidator {
 
     public MyValidator() {
         this.validatorModel = new ValidatorModel(true, "");
-
     }
 
     public ValidatorModel checkMeeting(Meeting meeting) {

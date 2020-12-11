@@ -32,17 +32,17 @@ import butterknife.ButterKnife;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private final List<Meeting> mMeetings;
+    private final List<Meeting> meetings;
     Context mContext;
 
     public MyAdapter(Context context, List<Meeting> meetings) {
         this.mContext = context;
-        this.mMeetings = meetings;
+        this.meetings = meetings;
     }
 
     public void updateMeeting(List<Meeting> newMeetings) {
-        mMeetings.clear();
-        mMeetings.addAll(newMeetings);
+        meetings.clear();
+        meetings.addAll(newMeetings);
         notifyDataSetChanged();
     }
 
@@ -56,10 +56,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
-        Meeting meeting = mMeetings.get(position);
-        viewHolder.updateWithMeetingItem(this.mMeetings.get(position));
-        viewHolder.mMeetingMarker.setImageResource(meeting.getRoom().getImage());
-
+        Meeting meeting = meetings.get(position);
+        viewHolder.updateWithMeetingItem(this.meetings.get(position));
+        viewHolder.mColor.setImageResource(meeting.getRoom().getImage());
 
         viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -71,18 +70,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mMeetings.size();
+        return meetings.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_meeting_name)
-        public TextView mMeetingName;
+        public TextView mName;
         @BindView(R.id.item_meeting_mails)
-        public TextView mMeetingMails;
+        public TextView mEmails;
         @BindView(R.id.item_list_delete_button)
         public ImageButton mDeleteButton;
         @BindView(R.id.item_logo)
-        public ImageView mMeetingMarker;
+        public ImageView mColor;
 
 
         public ViewHolder(View itemview) {
@@ -103,7 +102,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 }
             }
 
-            this.mMeetingMails.setText(titleResult.toString());
+            this.mEmails.setText(titleResult.toString());
             StringBuilder subTitleResult = new StringBuilder();
             subTitleResult.append(meeting.getName());
 
@@ -117,7 +116,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             Room room = meeting.getRoom();
             subTitleResult.append(room.getName());
-            this.mMeetingName.setText(subTitleResult.toString());
+            this.mName.setText(subTitleResult.toString());
         }
     }
 }

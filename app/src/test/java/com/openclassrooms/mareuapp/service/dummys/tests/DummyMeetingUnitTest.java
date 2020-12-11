@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
-public class DummyMeetingTest {
+public class DummyMeetingUnitTest {
 
     private MeetingApiService meetingService;
     private RoomApiService roomService;
@@ -58,11 +58,11 @@ public class DummyMeetingTest {
 
     @Test
     public void getMeetingsMatchRoom() {
-        Meeting presentMeeting = meetingService.getMeetings().get(1);
-        Meeting absentMeeting = meetingService.getMeetings().get(2);
+        Meeting presentMeeting = meetingService.getMeetings().get(0);
+        Meeting absentMeeting = meetingService.getMeetings().get(1);
         List<Meeting> expectedMeetings = meetingService.getMeetingsMatchRoom(roomService.getRooms().get(1));
-        assertTrue(expectedMeetings.contains(presentMeeting));
-        assertFalse(expectedMeetings.contains(absentMeeting));
+        assertFalse(expectedMeetings.contains(presentMeeting));
+        assertTrue(expectedMeetings.contains(absentMeeting));
         assertNotNull(expectedMeetings);
     }
 
