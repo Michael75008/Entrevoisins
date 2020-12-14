@@ -11,10 +11,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.Participant;
 import com.openclassrooms.mareuapp.model.Room;
@@ -28,6 +26,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.openclassrooms.mareuapp.R.string.comma;
+import static com.openclassrooms.mareuapp.R.string.dash;
+import static com.openclassrooms.mareuapp.R.string.hour_pattern;
+import static com.openclassrooms.mareuapp.R.string.room_is_deleted;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -63,7 +66,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
-                Toast.makeText(mContext, "La réunion a été supprimée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getResources().getString(room_is_deleted), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -82,11 +85,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ImageButton mDeleteButton;
         @BindView(R.id.item_logo)
         public ImageView mColor;
-
+        Context mContext;
 
         public ViewHolder(View itemview) {
             super(itemview);
             ButterKnife.bind(this, itemview);
+            mContext = itemview.getContext();
         }
 
         public void updateWithMeetingItem(Meeting meeting) {
@@ -97,22 +101,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Participant participant = meeting.getParticipants().get(i);
                     titleResult.append(participant.getMail());
                     if (i < participants.size() - 1) {
-                        titleResult.append(", ");
+                        titleResult.append(mContext.getResources().getString(comma));
                     }
                 }
             }
-
             this.mEmails.setText(titleResult.toString());
+
             StringBuilder subTitleResult = new StringBuilder();
             subTitleResult.append(meeting.getName());
 
-            subTitleResult.append(" - ");
+            subTitleResult.append(mContext.getResources().getString(dash));
 
-            DateFormat dateFormat1 = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+            DateFormat dateFormat1 = new SimpleDateFormat(mContext.getResources().getString(hour_pattern), Locale.FRANCE);
             String hour = dateFormat1.format(meeting.getDate());
             subTitleResult.append(hour);
 
-            subTitleResult.append(" - ");
+            subTitleResult.append(mContext.getResources().getString(dash));
 
             Room room = meeting.getRoom();
             subTitleResult.append(room.getName());

@@ -12,14 +12,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.openclassrooms.mareuapp.R;
 import com.openclassrooms.mareuapp.di.DI;
 import com.openclassrooms.mareuapp.events.DeleteMeetingEvent;
-import com.openclassrooms.mareuapp.R;
-import com.openclassrooms.mareuapp.utils.Pickers;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.service.apiservice.MeetingApiService;
 import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.MyAdapter;
+import com.openclassrooms.mareuapp.utils.Pickers;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.openclassrooms.mareuapp.R.id.fab_add_meeting;
-import static com.openclassrooms.mareuapp.R.id.masked;
 import static com.openclassrooms.mareuapp.R.id.toolbar;
 import static com.openclassrooms.mareuapp.R.layout.activity_list_meeting;
 
@@ -53,10 +52,6 @@ public class MeetingActivity extends AppCompatActivity {
     Pickers mPickers;
     Calendar mCalendar;
     Date mDate;
-
-    public final static String EMPTY_FULL_LIST = "La liste de réunion est vide";
-    public final static String EMPTY_DATE = "Aucune réunion à cette date";
-    public final static String EMPTY_ROOM = "Aucune réunion pour cette salle";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +79,7 @@ public class MeetingActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.getallmeetings:
                 mAdapter.updateMeeting(mMeetingApiService.getMeetings());
-                utilsForFilter(EMPTY_FULL_LIST);
+                utilsForFilter(R.string.empty_full_list);
                 return true;
 
             case R.id.filterbydate:
@@ -92,23 +87,23 @@ public class MeetingActivity extends AppCompatActivity {
                     mCalendar.set(year, month, day);
                     mDate = mCalendar.getTime();
                     mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchDate(mDate));
-                    utilsForFilter(EMPTY_DATE);
+                    utilsForFilter(R.string.empty_date);
                 });
                 return true;
 
             case R.id.Peach:
                 mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(0)));
-                utilsForFilter(EMPTY_ROOM);
+                utilsForFilter(R.string.empty_room);
                 return true;
 
             case R.id.Mario:
                 mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(1)));
-                utilsForFilter(EMPTY_ROOM);
+                utilsForFilter(R.string.empty_room);
                 return true;
 
             case R.id.Luigi:
                 mAdapter.updateMeeting(mMeetingApiService.getMeetingsMatchRoom(mRoomApiService.getRooms().get(2)));
-                utilsForFilter(EMPTY_ROOM);
+                utilsForFilter(R.string.empty_room);
                 return true;
 
             default:
@@ -127,7 +122,7 @@ public class MeetingActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    void utilsForFilter(String message) {
+    void utilsForFilter(int message) {
         if (mMeetings.isEmpty())
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

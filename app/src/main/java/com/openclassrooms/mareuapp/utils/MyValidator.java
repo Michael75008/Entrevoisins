@@ -1,19 +1,20 @@
 package com.openclassrooms.mareuapp.utils;
 
+import com.openclassrooms.mareuapp.R;
+import com.openclassrooms.mareuapp.di.DI;
 import com.openclassrooms.mareuapp.model.Meeting;
 import com.openclassrooms.mareuapp.model.ValidatorModel;
+import com.openclassrooms.mareuapp.service.apiservice.MeetingApiService;
 
 
 public class MyValidator {
 
     ValidatorModel validatorModel;
-    private final static String ERROR_NAME = "Renseignez un nom de réunion avant de valider";
-    private final static String ERROR_ROOM = "Renseignez une salle de réunion avant de valider";
-    private final static String ERROR_PARTICIPANT = "Selectionnez au moins un participant avant de valider";
-
+    MeetingApiService mApiService;
 
     public MyValidator() {
-        this.validatorModel = new ValidatorModel(true, "");
+        this.validatorModel = new ValidatorModel(true, App.getRes().getString(R.string.void_text));
+        this.mApiService = DI.getMeetingApiService();
     }
 
     public ValidatorModel checkMeeting(Meeting meeting) {
@@ -22,11 +23,13 @@ public class MyValidator {
             validatorModel.setValid(false);
             return validatorModel;
         }
-        check(meeting.getName().isEmpty(), ERROR_NAME);
-        check(meeting.getRoom().getName() == null, ERROR_ROOM);
-        check(meeting.getParticipants().size() == 0, ERROR_PARTICIPANT);
+        check(meeting.getName().isEmpty(), App.getRes().getString(R.string.choose_meeting_name_before_validate));
+        check(meeting.getRoom().getName() == null, App.getRes().getString(R.string.choose_meeting_room_before_validate));
+        check(meeting.getParticipants().size() == 0, App.getRes().getString(R.string.choose_meeting_participant_before_validate));
+
         return validatorModel;
     }
+
 
     private void check(boolean condition, String msg) {
         if (condition) {

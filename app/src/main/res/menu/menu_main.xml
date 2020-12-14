@@ -4,32 +4,32 @@
     tools:context="com.openclassrooms.mareuapp.ui_meetings_list.ui.MeetingActivity">
     <item
         android:id="@+id/getallmeetings"
-        android:title="Toutes mes réunions"
+        android:title="@string/all_meetings"
         app:showAsAction="never">
     </item>
     <item
         android:id="@+id/filterbyplace"
         android:orderInCategory="1"
-        android:title="Filtrer par Lieu"
+        android:title="@string/filtration_by_place"
         app:showAsAction="never">
         <menu>
             <item
                 android:id="@+id/Peach"
-                android:title="Salle Peach"
+                android:title="@string/room_Peach"
                 />
 
             <item
                 android:id="@+id/Mario"
-                android:title="Salle Mario" />
+                android:title="@string/room_Mario" />
 
             <item
                 android:id="@+id/Luigi"
-                android:title="Salle Luigi" />
+                android:title="@string/room_Luigi" />
         </menu>
     </item>
     <item
         android:id="@+id/filterbydate"
-        android:title="Filtrer par Date"
+        android:title="@string/filtration_by_date"
         app:showAsAction="never">
     </item>
 </menu>

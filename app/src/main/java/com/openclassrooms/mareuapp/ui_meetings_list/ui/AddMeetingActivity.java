@@ -20,6 +20,7 @@ import com.openclassrooms.mareuapp.service.apiservice.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomRoomAdapter;
+import com.openclassrooms.mareuapp.utils.App;
 import com.openclassrooms.mareuapp.utils.MyValidator;
 import com.openclassrooms.mareuapp.utils.Pickers;
 
@@ -35,8 +36,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.openclassrooms.mareuapp.R.string.ActionBarAddMeeting;
-import static com.openclassrooms.mareuapp.R.string.RéuNotRegistred;
+import static com.openclassrooms.mareuapp.R.string.actionbar_add_meeting;
+import static com.openclassrooms.mareuapp.R.string.hour_choice;
+import static com.openclassrooms.mareuapp.R.string.hour_pattern;
+import static com.openclassrooms.mareuapp.R.string.meeting_not_registered;
+import static com.openclassrooms.mareuapp.R.string.registered;
+import static com.openclassrooms.mareuapp.R.string.the_meeting;
+import static com.openclassrooms.mareuapp.R.string.two_points;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -87,7 +93,11 @@ public class AddMeetingActivity extends AppCompatActivity {
     @OnClick(R.id.date_image)
     public void onDateClick() {
         mPickers.showCalendar(this, (datePicker, year, month, day) -> {
-            mDate.setText("Date de réunion choisie : " + day + "/" + (month + 1) + "/" + year);
+            mDate.setText(new StringBuilder()
+                    .append(getString(R.string.date_choice)).append(day)
+                    .append(getString(R.string.slash)).append(month + 1)
+                    .append(getString(R.string.slash))
+                    .append(year).toString());
             Calendar cal = Calendar.getInstance();
             cal.set(year, month, day);
             mDateMeeting = cal.getTime();
@@ -97,7 +107,10 @@ public class AddMeetingActivity extends AppCompatActivity {
     @OnClick(R.id.time_image)
     public void onTimeClick() {
         mPickers.showTime(this, (timePicker, hours, minutes) -> {
-            mTime.setText("Heure de réunion choisie : " + hours + ":" + minutes);
+            mTime.setText(new StringBuilder()
+                    .append(getString(hour_choice))
+                    .append(hours).append(getString(two_points))
+                    .append(minutes).toString());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(mDateMeeting);
             calendar.set(Calendar.MINUTE, minutes);
@@ -123,18 +136,18 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private void setActionBar() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(ActionBarAddMeeting);
+        getSupportActionBar().setTitle(actionbar_add_meeting);
     }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        Toast.makeText(getApplicationContext(), RéuNotRegistred, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), meeting_not_registered, Toast.LENGTH_SHORT).show();
         return true;
     }
 
     public void onSupportDateAndTime() {
-        mDate.setText(new SimpleDateFormat(getString(R.string.ddMMyyyyPatern), Locale.FRANCE).format(new Date()));
-        mTime.setText(new SimpleDateFormat(getString(R.string.HHmmPatern), Locale.FRANCE).format(new Date()));
+        mDate.setText(new SimpleDateFormat(App.getRes().getString(R.string.day_pattern), Locale.FRANCE).format(new Date()));
+        mTime.setText(new SimpleDateFormat(App.getRes().getString(hour_pattern), Locale.FRANCE).format(new Date()));
     }
 
     private void setRoomsAdapter() {
@@ -162,7 +175,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         if (validatorMessage.isValid()) {
             mMeetingApiService.createMeeting(mMeeting);
             finish();
-            Toast.makeText(getApplicationContext(), "La réunion " + mMeeting.getName() + " a bien étée enregistrée", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), App.getRes().getString(the_meeting) + mMeeting.getName() + App.getRes().getString(registered), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_SHORT).show();
         }

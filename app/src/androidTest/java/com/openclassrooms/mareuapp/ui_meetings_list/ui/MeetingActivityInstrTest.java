@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -28,7 +27,6 @@ import java.util.Date;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
@@ -36,12 +34,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.openclassrooms.mareuapp.R.string.ActionBarAddMeeting;
 import static com.openclassrooms.mareuapp.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -85,7 +81,7 @@ public class MeetingActivityInstrTest {
         //Check action bar to see if we are in AddMeetingActivity
         onView(allOf(instanceOf(TextView.class),
                 withParent(withResourceName("action_bar"))))
-                .check(matches(withText(ActionBarAddMeeting)));
+                .check(matches(withText(R.string.actionbar_add_meeting)));
     }
 
     @Test
@@ -193,12 +189,5 @@ public class MeetingActivityInstrTest {
                                 withParent(withId(R.id.list_meetings)))),
                         isDisplayed()));
         textView.check(matches(withText(containsString("Réunion X"))));
-        //Check Participants are displayed correctly
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.item_meeting_mails), withText("viviane@lamzone.com, paul@lamzone.com"),
-                        withParent(allOf(withId(R.id.item_list_container),
-                                withParent(withId(R.id.list_meetings)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("viviane@lamzone.com, paul@lamzone.com")));
     }
 }
