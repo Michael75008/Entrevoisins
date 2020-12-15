@@ -108,7 +108,7 @@ public class AddMeetingInstrTest {
         //Perform a click to confirm date
         onView(withText("OK")).perform(click());
         //Ensure that new date is shown to user
-        onView(withId(R.id.date_view)).check(matches(withText("Date de réunion choisie : 24/12/2050")));
+        onView(withId(R.id.date_view)).check(matches(withText("Date de réunion choisie :24/12/2050")));
         //Click on time icon to open time picker
         onView(allOf(withId(R.id.time_image))).perform(click());
         // Select a time: 18:30
@@ -116,6 +116,6 @@ public class AddMeetingInstrTest {
         //Ensure that new time is shown to user
         onView(withText("OK")).perform(click());
         //Ensure that new hour has been correctly displayed on screen
-        onView(withId(R.id.time_view)).check(matches(withText("Heure de réunion choisie : 18:30")));
+        onView(withId(R.id.time_view)).check(matches(withText("Heure de réunion choisie :18:30")));
     }
 }

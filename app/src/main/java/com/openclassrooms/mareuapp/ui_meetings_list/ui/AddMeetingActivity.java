@@ -20,7 +20,6 @@ import com.openclassrooms.mareuapp.service.apiservice.ParticipantApiService;
 import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomParticipantAdapter;
 import com.openclassrooms.mareuapp.ui_meetings_list.ui.adapters.CustomRoomAdapter;
-import com.openclassrooms.mareuapp.utils.App;
 import com.openclassrooms.mareuapp.utils.MyValidator;
 import com.openclassrooms.mareuapp.utils.Pickers;
 
@@ -146,8 +145,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     public void onSupportDateAndTime() {
-        mDate.setText(new SimpleDateFormat(App.getRes().getString(R.string.day_pattern), Locale.FRANCE).format(new Date()));
-        mTime.setText(new SimpleDateFormat(App.getRes().getString(hour_pattern), Locale.FRANCE).format(new Date()));
+        mDate.setText(new SimpleDateFormat(getString(R.string.day_pattern), Locale.FRANCE).format(new Date()));
+        mTime.setText(new SimpleDateFormat(getString(hour_pattern), Locale.FRANCE).format(new Date()));
     }
 
     private void setRoomsAdapter() {
@@ -173,12 +172,18 @@ public class AddMeetingActivity extends AppCompatActivity {
         );
         ValidatorModel validatorMessage = mValidator.checkMeeting(mMeeting);
         if (validatorMessage.isValid()) {
-            mMeetingApiService.createMeeting(mMeeting);
-            finish();
-            Toast.makeText(getApplicationContext(), App.getRes().getString(the_meeting) + mMeeting.getName() + App.getRes().getString(registered), Toast.LENGTH_LONG).show();
+            if (mMeetingApiService.isMeetingAlreadyCreated(mMeeting)) {
+                Toast.makeText(getApplicationContext(), getString(R.string.cannot_create_same_meeting_twice), Toast.LENGTH_SHORT).show();
+            } else {
+                mMeetingApiService.createMeeting(mMeeting);
+                finish();
+                Toast.makeText(getApplicationContext(), getString(the_meeting) + mMeeting.getName() + getString(registered), Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), validatorMessage.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(validatorMessage.getErrorMessage()), Toast.LENGTH_SHORT).show();
         }
     }
 }
+
+
 

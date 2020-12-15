@@ -82,4 +82,9 @@ public class Meeting implements Serializable {
     public Room getRoom() {
         return mRoom;
     }
+
+    public void setRoom(Room mRoom) {
+        this.mRoom = mRoom;
+    }
+
 }

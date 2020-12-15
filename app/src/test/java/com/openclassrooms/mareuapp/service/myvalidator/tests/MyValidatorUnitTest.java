@@ -7,7 +7,7 @@ import com.openclassrooms.mareuapp.model.ValidatorModel;
 import com.openclassrooms.mareuapp.service.generators.ParticipantApiServiceGenerator;
 import com.openclassrooms.mareuapp.service.generators.RoomApiServiceGenerator;
 import com.openclassrooms.mareuapp.utils.MyValidator;
-
+import com.openclassrooms.mareuapp.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class MyValidatorUnitTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mCalendar.set(Calendar.YEAR, 2020);
         mCalendar.set(Calendar.MONTH, 12);
         mCalendar.set(Calendar.DAY_OF_MONTH, 24);
@@ -46,8 +46,7 @@ public class MyValidatorUnitTest {
         MyValidator myValidator = new MyValidator();
         ValidatorModel validatorModel = myValidator.checkMeeting(null);
         assertFalse(validatorModel.isValid());
-        assertEquals("", validatorModel.getErrorMessage());
-    }
+        assertEquals(R.string.void_text, validatorModel.getErrorMessage());    }
 
     @Test
     public void checkMeetingWithMeetingNameEmpty() {
@@ -55,8 +54,7 @@ public class MyValidatorUnitTest {
         Meeting meeting = new Meeting(555, "", RoomApiServiceGenerator.generateRooms().get(1), mDate, Arrays.asList(ParticipantApiServiceGenerator.generateParticipants().get(1), ParticipantApiServiceGenerator.generateParticipants().get(2)));
         ValidatorModel validatorModel = myValidator.checkMeeting(meeting);
         assertFalse(validatorModel.isValid());
-        assertEquals("Renseignez un nom de réunion avant de valider", validatorModel.getErrorMessage());
-    }
+        assertEquals(R.string.choose_meeting_name_before_validate, validatorModel.getErrorMessage());    }
 
     @Test
     public void checkMeetingWithMeetingRoomNull() {
@@ -66,8 +64,7 @@ public class MyValidatorUnitTest {
         Meeting meeting = new Meeting(555, "Reunion X", room, mDate, Arrays.asList(ParticipantApiServiceGenerator.generateParticipants().get(1), ParticipantApiServiceGenerator.generateParticipants().get(2)));
         ValidatorModel validatorModel = myValidator.checkMeeting(meeting);
         assertFalse(validatorModel.isValid());
-        assertEquals("Renseignez une salle de réunion avant de valider", validatorModel.getErrorMessage());
-    }
+        assertEquals(R.string.choose_meeting_room_before_validate, validatorModel.getErrorMessage());    }
 
     @Test
     public void checkMeetingWithMeetingParticipantsListEmpty() {
@@ -77,8 +74,7 @@ public class MyValidatorUnitTest {
         Meeting meeting = new Meeting(555, "Reunion X", new Room(), mDate, participantList);
         ValidatorModel validatorModel = myValidator.checkMeeting(meeting);
         assertFalse(validatorModel.isValid());
-        assertEquals("Selectionnez au moins un participant avant de valider", validatorModel.getErrorMessage());
-    }
+        assertEquals(R.string.choose_meeting_participant_before_validate, validatorModel.getErrorMessage());    }
 
     @Test
     public void checkMeetingWithMeetingValid() {
@@ -86,6 +82,5 @@ public class MyValidatorUnitTest {
         Meeting meeting = new Meeting(555, "Reunion X", RoomApiServiceGenerator.generateRooms().get(1), mDate, Arrays.asList(ParticipantApiServiceGenerator.generateParticipants().get(1), ParticipantApiServiceGenerator.generateParticipants().get(2)));
         ValidatorModel validatorModel = myValidator.checkMeeting(meeting);
         assertTrue(validatorModel.isValid());
-        assertEquals("", validatorModel.getErrorMessage());
-    }
+        assertEquals(R.string.void_text, validatorModel.getErrorMessage());    }
 }

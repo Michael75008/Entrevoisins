@@ -27,8 +27,8 @@
     <string name="hour_pattern">HH:mm</string>
     <string name="day_pattern">dd-MM-yyyy</string>
     <string name="slash">/</string>
-    <string name="date_choice">Date de réunion choisie : \u0020 </string>
-    <string name="hour_choice">Heure de réunion choisie : \u0020</string>
+    <string name="date_choice">Date de réunion choisie :</string>
+    <string name="hour_choice">Heure de réunion choisie :</string>
     <string name="two_points">:</string>
     <string name="void_text">""</string>
     <string name="dash"> \u0020-\u0020</string>
@@ -57,6 +57,7 @@
     <string name="empty_date">Aucune réunion à cette date</string>
     <string name="empty_room">Aucune réunion pour cette salle</string>
     <string name="choose_meeting_name_before_validate">Renseignez un nom de réunion avant de valider</string>
+    <string name="cannot_create_same_meeting_twice">Il existe deja un meeting a la meme date pour cette salle </string>
 
 
 </resources>

@@ -16,26 +16,32 @@ public class ValidatorModel {
      * Message
      */
 
-    private String errorMessage;
+    private int errorMessageId;
 
     /**
      * Constructor
      */
 
-    public ValidatorModel(boolean isValid, String errorMessage) {
+    public ValidatorModel(boolean isValid, int errorMessageId) {
         this.isValid = isValid;
-        this.errorMessage = errorMessage;
+        this.errorMessageId = errorMessageId;
     }
 
     /**
      * Getters and setters
      */
 
-    public boolean isValid() { return isValid; }
+    public boolean isValid() {
+        return isValid;
+    }
 
-    public void setValid(boolean valid) { isValid = valid; }
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
 
-    public String getErrorMessage() { return errorMessage; }
+    public int getErrorMessage() { return errorMessageId; }
 
-    public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+    public void setErrorMessage(int errorMessageId) {
+        this.errorMessageId = errorMessageId;
+    }
 }

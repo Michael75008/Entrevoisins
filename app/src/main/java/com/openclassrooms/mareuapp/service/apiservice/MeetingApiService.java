@@ -37,4 +37,13 @@ public interface MeetingApiService {
      */
 
     List<Meeting> getMeetingsMatchDate(Date date);
+
+    /**
+     * Check if a meeting already exist. Will compare the date and the room in order to decide
+     * @param meeting the current meeting we want to check if a similar already exist
+     * @return true if a meeting is already created with the same room and date. Else return no
+     */
+
+    boolean isMeetingAlreadyCreated(Meeting meeting);
+
 }

@@ -66,4 +66,20 @@ public class DummyMeetingApiService implements MeetingApiService {
         }
         return currentMeetings;
     }
+
+    private boolean isTheSameDate(Date date1, Date date2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy:HH:mm", Locale.FRANCE);
+        return sdf.format(date1).equals(sdf.format(date2));
+    }
+    @Override
+    public boolean isMeetingAlreadyCreated(Meeting meeting) {
+        for (int i = 0; i < mMeetings.size(); i++) {
+            Meeting currentmeeting = mMeetings.get(i);
+            if (currentmeeting.getRoom().getName().equals(meeting.getRoom().getName())
+                    && isTheSameDate(currentmeeting.getDate(), meeting.getDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
