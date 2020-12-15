@@ -59,6 +59,10 @@ public class Meeting implements Serializable {
 
     public Meeting() {}
 
+    public void setRoom(Room mRoom) {
+        this.mRoom = mRoom;
+    }
+
     /**
      * Getters and setters
      */

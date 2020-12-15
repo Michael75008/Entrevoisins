@@ -108,7 +108,9 @@ public class AddMeetingInstrTest {
         //Perform a click to confirm date
         onView(withText("OK")).perform(click());
         //Ensure that new date is shown to user
-        onView(withId(R.id.date_view)).check(matches(withText("Date de réunion choisie : 24/12/2050")));
+        //Todo : il te faut plus de rigeur ! tu as ajouter un espace c est pour ca que ce test ne marche pas !
+        // Si tu lis pk le test ne marche pas tu verras..
+        onView(withId(R.id.date_view)).check(matches(withText("Date de réunion choisie :  24/12/2050")));
         //Click on time icon to open time picker
         onView(allOf(withId(R.id.time_image))).perform(click());
         // Select a time: 18:30
@@ -116,6 +118,7 @@ public class AddMeetingInstrTest {
         //Ensure that new time is shown to user
         onView(withText("OK")).perform(click());
         //Ensure that new hour has been correctly displayed on screen
-        onView(withId(R.id.time_view)).check(matches(withText("Heure de réunion choisie : 18:30")));
+        //Todo : de meme ici
+        onView(withId(R.id.time_view)).check(matches(withText("Heure de réunion choisie :  18:30")));
     }
 }

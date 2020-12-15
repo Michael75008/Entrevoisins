@@ -1,7 +1,8 @@
-package com.openclassrooms.mareuapp.service.dummys.tests;
+package com.openclassrooms.mareuapp.service.Dummys.tests;
 
 import com.openclassrooms.mareuapp.di.DI;
 import com.openclassrooms.mareuapp.model.Meeting;
+import com.openclassrooms.mareuapp.model.Room;
 import com.openclassrooms.mareuapp.service.apiservice.MeetingApiService;
 import com.openclassrooms.mareuapp.service.apiservice.RoomApiService;
 import com.openclassrooms.mareuapp.service.generators.MeetingApiServiceGenerator;
@@ -25,10 +26,21 @@ public class DummyMeetingUnitTest {
 
     private MeetingApiService meetingService;
     private RoomApiService roomService;
+    private Meeting fakeMeeting;
+    private Date fakeDate;
+    private Room fakeRoom;
 
 
     @Before
     public void setup() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 10);
+        cal.set(Calendar.MONTH, 11);
+        cal.set(Calendar.YEAR, 2020);
+        fakeDate = cal.getTime();
+        fakeMeeting = new Meeting();
+        fakeMeeting.setDate(fakeDate);
+        fakeRoom = new Room(30,30,"fakeRoom");
         meetingService = DI.getNewInstanceMeetingApiService();
         roomService = DI.getRoomApiService();
     }
@@ -66,19 +78,59 @@ public class DummyMeetingUnitTest {
 
     @Test
     public void getMeetingsMatchDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 10);
-        cal.set(Calendar.MONTH, 11);
-        cal.set(Calendar.YEAR, 2020);
-        Date date = cal.getTime();
-        Meeting meeting = new Meeting();
-        meeting.setDate(date);
-        meetingService.createMeeting(meeting);
-        List<Meeting> expectedMeetings = meetingService.getMeetingsMatchDate(date);
-        assertTrue(expectedMeetings.contains(meeting));
+        meetingService.createMeeting(fakeMeeting);
+        List<Meeting> expectedMeetings = meetingService.getMeetingsMatchDate(fakeDate);
+        assertTrue(expectedMeetings.contains(fakeMeeting));
         assertNotNull(expectedMeetings);
-
     }
 
+    @Test
+    public void checkMeetingAlreadyCreated() {
+        fakeMeeting.setDate(fakeDate);
+        fakeMeeting.setRoom(fakeRoom);
+        Meeting meeting = new Meeting(1);
+        meeting.setDate(fakeDate);
+        meeting.setRoom(fakeRoom);
+        meetingService.createMeeting(meeting);
+        boolean result = meetingService.isMeetingAlreadyCreated(fakeMeeting);
+        assertTrue(result);
+    }
 
+    @Test
+    public void checkMeetingNotAlreadyCreated() {
+        fakeMeeting.setDate(fakeDate);
+        fakeMeeting.setRoom(fakeRoom);
+        boolean result = meetingService.isMeetingAlreadyCreated(fakeMeeting);
+        assertFalse(result);
+    }
+
+    @Test
+    public void checkMeetingNotAlreadyCreatedDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 12);
+        cal.set(Calendar.MONTH, 12);
+        cal.set(Calendar.YEAR, 2020);
+        Date date = cal.getTime();
+        fakeMeeting.setDate(fakeDate);
+        fakeMeeting.setRoom(fakeRoom);
+        Meeting meeting = new Meeting(1);
+        meeting.setDate(date);
+        meeting.setRoom(fakeRoom);
+        meetingService.createMeeting(meeting);
+        boolean result = meetingService.isMeetingAlreadyCreated(fakeMeeting);
+        assertFalse(result);
+    }
+
+    @Test
+    public void checkMeetingNotAlreadyCreatedRoom() {
+        Room room = new Room(32,32,"room");
+        fakeMeeting.setDate(fakeDate);
+        fakeMeeting.setRoom(fakeRoom);
+        Meeting meeting = new Meeting(1);
+        meeting.setDate(fakeDate);
+        meeting.setRoom(room);
+        meetingService.createMeeting(meeting);
+        boolean result = meetingService.isMeetingAlreadyCreated(fakeMeeting);
+        assertFalse(result);
+    }
 }

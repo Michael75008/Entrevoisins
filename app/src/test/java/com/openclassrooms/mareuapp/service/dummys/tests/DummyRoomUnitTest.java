@@ -1,4 +1,4 @@
-package com.openclassrooms.mareuapp.service.dummys.tests;
+package com.openclassrooms.mareuapp.service.Dummys.tests;
 
 import com.openclassrooms.mareuapp.di.DI;
 import com.openclassrooms.mareuapp.model.Room;

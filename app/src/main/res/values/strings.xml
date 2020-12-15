@@ -33,6 +33,7 @@
     <string name="void_text">""</string>
     <string name="dash"> \u0020-\u0020</string>
     <string name="the_meeting">La réunion : \u0020 </string>
+    <string name="cannot_create_same_meeting_twice">Il existe deja un meeting a la meme date pour cette salle </string>
     <string name="registered"> \u0020 a bien étée enregistrée</string>
     <string name="validate_meeting">Valider la réunion</string>
     <string name="choose_meeting">Choisissez la salle de réunion</string>

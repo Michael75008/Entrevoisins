@@ -53,6 +53,30 @@ public class DummyMeetingApiService implements MeetingApiService {
         return currentMeetings;
     }
 
+    //Todo : remove this comment
+    // Pour simplifier j ai creer une method dont le seul but est de verifier que les dates sont les meme
+    // Il existe des techjnique plus puissante mais j ai voulu garder ton style
+    private boolean isTheSameDate(Date date1, Date date2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy:HH:mm", Locale.FRANCE);
+        return sdf.format(date1).equals(sdf.format(date2));
+    }
+
+    //Todo : remove this comment
+    // Encore une fois, pour faire un algo faut juste ecrire en francais ce que tu veux faire
+    // ici la seul difference c etait la condition avoir la meme date et avoir la meme salle
+    // Tu as deja fait separement ces 2 checks
+    @Override
+    public boolean isMeetingAlreadyCreated(Meeting meeting) {
+        for (int i = 0; i < mMeetings.size(); i++) {
+            Meeting currentmeeting = mMeetings.get(i);
+            if (currentmeeting.getRoom().getName().equals(meeting.getRoom().getName())
+                    && isTheSameDate(currentmeeting.getDate(), meeting.getDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Get meeting's list filtered by room name
      */
